@@ -22,7 +22,7 @@ RUN curl -O https://blackarch.org/strap.sh && \
     sudo pacman -Fyy --noconfirm && \
     sudo pacman -Syyu --noconfirm
 
-RUN sudo pacman -S --noconfirm --needed base base-devel archiso blackarch devtools dosfstools mtools
+RUN sudo pacman -S --noconfirm --needed base base-devel archiso blackarch devtools dosfstools mtools fakeroot fakechroot
 
 ENV LC_ALL=en_US.UTF-8
 

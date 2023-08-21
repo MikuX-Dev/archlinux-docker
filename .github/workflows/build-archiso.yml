@@ -19,9 +19,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Build Image
+        run: |
+          docker build -t mikuxdev/archiso-builder:latest -f Dockerfile .
+
       - name: Push Image
         run: |
-          docker build --platform linux/arm64 -t MikuXDev/archiso-builder:latest -f Dockerfile .
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker push MikuXDev/archiso-builder:latest
+          docker push mikuxdev/archiso-builder:latest
 
