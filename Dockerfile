@@ -15,12 +15,12 @@ else \
 fi
 
 RUN curl -O https://blackarch.org/strap.sh | bash - && \
-    sudo pacman-key --init --noconfirm && \
-    sudo pacman-key --populate --noconfirm archlinux blackarch && \
-    sudo pacman -Fyy --noconfirm && \
-    sudo pacman -Syyu --noconfirm
+    pacman-key --init --noconfirm && \
+    pacman-key --populate --noconfirm archlinux blackarch && \
+    pacman -Fyy --noconfirm && \
+    pacman -Syyu --noconfirm
 
-RUN sudo pacman -S --noconfirm --needed base base-devel archiso blackarch devtools dosfstools mtools fakeroot fakechroot
+RUN pacman -S --noconfirm --needed base base-devel archiso blackarch devtools dosfstools mtools fakeroot fakechroot
 
 ENV LC_ALL=en_US.UTF-8
 
