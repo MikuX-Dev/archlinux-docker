@@ -13,18 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      - name: Log into registry 
+        uses: docker/login-action@v2
         with:
-          qemu: true
-
-      - name: Build and push Docker image
-        env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Image
         run: |
-          docker buildx create --use
-          docker buildx build --platform linux/arm64 -t MikuXDev/archiso-builder:latest -f Dockerfile .
+          docker build --platform linux/arm64 -t MikuXDev/archiso-builder:latest -f Dockerfile .
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker push MikuXDev/archiso-builder:latest
 
