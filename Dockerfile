@@ -16,7 +16,7 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
     locale-gen && \
     echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
-RUN sed -i 's/#KEYMAP=us/KEYMAP=us/g' /etc/vconsole.conf
+RUN echo 'KEYMAP=us' > /etc/vconsole.conf
 
 RUN pacman -Syyu --noconfirm --quiet --needed pacman-contrib && \
     curl -O https://blackarch.org/strap.sh && \
