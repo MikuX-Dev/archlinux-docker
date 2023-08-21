@@ -18,8 +18,8 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
 
 RUN echo 'KEYMAP=us' > /etc/vconsole.conf
 
-RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -O /etc/pacman.d/blackarch-mirrorlist && \
-    curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/mirrorlist -O /etc/pacman.d/mirrorlist
+RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
+    curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/mirrorlist -o /etc/pacman.d/mirrorlist
 
 RUN pacman -Syyu --noconfirm --quiet --needed pacman-contrib && \
     curl -O https://blackarch.org/strap.sh && \
