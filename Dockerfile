@@ -6,7 +6,7 @@ RUN \
 if grep -q "\[multilib\]" /etc/pacman.conf; then \
   echo "Multilib repo already enabled"; \
 else \
-  echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf; \
+  echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
 fi
 
 # Enabling Community repo.
@@ -14,7 +14,7 @@ RUN \
 if grep -q "\[community\]" /etc/pacman.conf; then \
   echo "Community repo already enabled"; \
 else \
-  sudo sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
+  sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
 fi
 
 # Install blackarch repository signing key
