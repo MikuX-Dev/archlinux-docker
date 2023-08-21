@@ -21,11 +21,11 @@ RUN echo 'KEYMAP=us' > /etc/vconsole.conf
 RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
     curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/mirrorlist -o /etc/pacman.d/mirrorlist
 
-RUN pacman -Syyu --noconfirm --quiet --needed pacman-contrib && \
+RUN pacman -Syy --noconfirm --quiet --needed pacman-contrib && \
     curl -O https://blackarch.org/strap.sh && \
     bash strap.sh --noconfirm --quiet && \
     pacman -Fyy --noconfirm --quiet && \
-    pacman -Syyu --noconfirm --quiet archlinux-keyring blackarch-keyring && \
+    pacman -Syy --noconfirm --quiet archlinux-keyring blackarch-keyring && \
     pacman -S --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso blackarch devtools dosfstools mtools fakeroot fakechroot
 
 RUN useradd -m builder && echo "builder:builder" | chpasswd
