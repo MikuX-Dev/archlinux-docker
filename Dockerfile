@@ -1,5 +1,5 @@
 # Use Arch Linux as base image
-FROM archlinux
+FROM archlinux:latest
 
 # Enabling multilib repo.
 RUN \
