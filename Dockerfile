@@ -14,11 +14,10 @@ else \
   sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
 fi
 
-RUN curl -O https://blackarch.org/strap.sh | bash - && \
-    pacman-key --init --noconfirm && \
-    pacman-key --populate --noconfirm archlinux blackarch && \
+RUN curl -O https://blackarch.org/strap.sh && \
+    bash strap.sh --noconfirm && \
     pacman -Fyy --noconfirm && \
-    pacman -Syyu --noconfirm
+    pacman -Syyu --noconfirm --needed archlinux-keyring blackarch-keyring
 
 RUN pacman -S --noconfirm --needed base base-devel archiso blackarch devtools dosfstools mtools fakeroot fakechroot
 
