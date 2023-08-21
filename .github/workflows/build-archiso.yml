@@ -22,7 +22,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           docker buildx create --use
-          docker buildx build --platform linux/amd64,linux/arm64 -t MikuXDev/archiso-builder:latest -f Dockerfile .
+          docker buildx build --platform linux/arm64 -t MikuXDev/archiso-builder:latest -f Dockerfile .
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           docker push MikuXDev/archiso-builder:latest
 
