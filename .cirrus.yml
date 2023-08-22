@@ -1,4 +1,4 @@
-env:
+env: 
   DOCKER_USERNAME: mikuxdev
   DOCKER_PASSWORD: dckr_pat_jD71wrUuhslR65t1Q7deGmLAp5o
 
@@ -6,13 +6,19 @@ task:
   name: archiso-builder
   timeout_in: 120m
   container:
-    image: blackarchlinux/blackarch
-    cpu: 8
-    memory: 32G
+    image: docker:20.10-git
+    privileged: true  # Required for Docker-in-Docker
   build_and_push_task:
-    setup_script:
+    setup_script: 
       - echo 'Setting up...'
+      - apk add --no-cache docker
+      - dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 &  # Start Docker daemon
+      - sleep 10  # Give the Docker daemon some time to start
+      - docker info  # Verify Docker is running
+    login_script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    build_script:
       - docker build -t mikuxdev/archiso-builder:latest -f Dockerfile .
+    push_script:
       - docker push mikuxdev/archiso-builder:latest
 
