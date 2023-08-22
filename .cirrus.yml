@@ -1,21 +1,14 @@
-env: 
+env:
   DOCKER_USERNAME: mikuxdev
   DOCKER_PASSWORD: dckr_pat_jD71wrUuhslR65t1Q7deGmLAp5o
 
 task:
   name: archiso-builder
   timeout_in: 120m
-  container:
-    image: blackarchlinux/blackarch
-    cpu: 8
-    memory: 32G 
   build_and_push_task:
-  setup_script: 
-    - echo 'Setting up...' && pacman -Syy --noconfirm --quiet --needed docker 
-  login_script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  build_script:
-    - docker build -t mikuxdev/archiso-builder:latest -f Dockerfile .
-  push_script:
-    - docker push mikuxdev/archiso-builder:latest
+    setup_script:
+      - echo 'Setting up...'
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t mikuxdev/archiso-builder:latest -f Dockerfile .
+      - docker push mikuxdev/archiso-builder:latest
 
