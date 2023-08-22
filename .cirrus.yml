@@ -6,8 +6,8 @@ task:
   name: archiso-builder
   container:
     image: docker:20.10-git
-      cpu: 8
-      memory: 32G
+    cpu: 8
+    memory: 32G
     privileged: true  # Required for Docker-in-Docker
   build_and_push_task:
     setup_script: 
