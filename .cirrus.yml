@@ -1,4 +1,5 @@
 task:
+  name: archiso-builder
   timeout_in: 120m
   container:
     image: archlinux:latest
