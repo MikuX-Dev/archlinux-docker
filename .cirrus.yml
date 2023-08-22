@@ -1,50 +1,50 @@
-env: 
+env:
   DOCKER_USERNAME: mikuxdev
   DOCKER_PASSWORD: dckr_pat_jD71wrUuhslR65t1Q7deGmLAp5o
 
-task:
-  name: archiso-builder
-  timeout_in: 120m
-  container:
-    image: archlinux:base-devel
-    cpu: 8
-    memory: 32G 
-  build_and_push_task:
-  setup_script: 
-    - echo 'Setting up...' 
-    - pacman-key --init
-    - pacman-key --populate
-    - curl -O https://blackarch.org/strap.sh 
-    - bash strap.sh --noconfirm --quiet 
-    
-    - if grep -q "\[multilib\]" /etc/pacman.conf; then \
-           sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
-      else \
-          echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
-      fi \
+steps:
+  - name: archiso-builder
+    timeout_in: 120m
+    container:
+      image: archlinux:base-devel
+      cpu: 8
+      memory: 32G
+    setup_script:
+      - echo 'Setting up...'
+      - pacman-key --init
+      - pacman-key --populate
+      - curl -O https://blackarch.org/strap.sh
+      - bash strap.sh --noconfirm --quiet
 
-      if grep -q "\[community\]" /etc/pacman.conf; then \
-           sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
-      else \
-          echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \ 
-      fi \
+      - if grep -q "\[multilib\]" /etc/pacman.conf; then
+          sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf;
+        else
+          echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf;
+        fi
 
-      sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen \ 
-      locale-gen \
-          
-      echo "LANG=en_US.UTF-8" > /etc/locale.conf \
+      - if grep -q "\[community\]" /etc/pacman.conf; then
+          sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf;
+        else
+          echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf;
+        fi
 
-      echo 'KEYMAP=us' > /etc/vconsole.conf 
+      - sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen
+      - locale-gen
+      - echo "LANG=en_US.UTF-8" > /etc/locale.conf
+      - echo 'KEYMAP=us' > /etc/vconsole.conf
+      - pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx
 
-    - pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
-  setup_docker:
-    - systemctl unmask docker.service 
-    - systemctl unmask docker.socket 
-    - systemctl start docker.service
-  login_script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  build_script:
-    - docker build -t archiso-builder:latest -f Dockerfile .
-  push_script:
-    - docker build archiso-builder:latest 
+    setup_docker:
+      - systemctl unmask docker.service
+      - systemctl unmask docker.socket
+      - systemctl start docker.service
+
+    login_script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+    build_script:
+      - docker build -t archiso-builder:latest -f Dockerfile .
+
+    push_script:
+      - docker push archiso-builder:latest
 
