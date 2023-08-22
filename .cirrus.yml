@@ -2,8 +2,8 @@ env:
   DOCKER_USERNAME: mikuxdev
   DOCKER_PASSWORD: dckr_pat_jD71wrUuhslR65t1Q7deGmLAp5o
 
-steps:
-  - name: archiso-builder
+task:
+    name: archiso-builder
     timeout_in: 120m
     container:
       image: archlinux:base-devel
