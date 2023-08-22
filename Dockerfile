@@ -1,12 +1,14 @@
 FROM archlinux/archlinux
 
-RUN if grep -q "\[multilib\]" /etc/pacman.conf; then \
+RUN \ 
+if grep -q "\[multilib\]" /etc/pacman.conf; then \
     sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
 else \
     echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
 fi
 
-RUN if grep -q "\[community\]" /etc/pacman.conf; then \
+RUN \ 
+if grep -q "\[community\]" /etc/pacman.conf; then \
     sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
 else \
     echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
@@ -27,11 +29,13 @@ RUN curl -O https://blackarch.org/strap.sh && \
 RUN pacman -Fyy --noconfirm --quiet && \
     pacman -Syy --noconfirm --quiet archlinux-keyring blackarch-keyring
     
-RUN pacman -S --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso blackarch devtools dosfstools mtools fakeroot fakechroot
+RUN pacman -S --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot
 
-RUN useradd -m builder && echo "builder:builder" | chpasswd
-USER builder
+RUN pacman -S --noconfirm --quiet --needed blackarch
 
-WORKDIR /home/builder
+#RUN useradd -m builder && echo "builder:builder" | chpasswd
+#USER builder
+
+#WORKDIR /home/builder
 
 CMD ["/bin/bash"]
