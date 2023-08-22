@@ -1,0 +1,27 @@
+version: 2
+
+workflows:
+  build-and-push:
+    jobs:
+      build-and-push:
+        docker:
+          - image: docker:20.10-git
+        environment:
+          DOCKER_USERNAME: $DOCKER_USERNAME
+          DOCKER_PASSWORD: $DOCKER_PASSWORD
+        steps:
+          - setup: "echo 'Setting up...'"
+          - run:
+              name: Log into registry
+              command: |
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+          - run:
+              name: Build Image
+              command: |
+                docker build -t mikuxdev/archiso-builder:latest -f Dockerfile .
+
+          - run:
+              name: Push Image
+              command: |
+                docker push mikuxdev/archiso-builder:latest
