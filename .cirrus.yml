@@ -12,10 +12,6 @@ task:
   build_and_push_task:
     setup_script: 
       - echo 'Setting up...'
-      - apk add --no-cache docker
-      - dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 &  # Start Docker daemon
-      - sleep 10  # Give the Docker daemon some time to start
-      - docker info  # Verify Docker is running
     login_script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     build_script:
