@@ -5,7 +5,7 @@ env:
 task:
   name: archiso-builder
   container:
-    image: docker:20.10-git
+    image: blackarchlinux/blackarch
     cpu: 8
     memory: 32G
     privileged: true  # Required for Docker-in-Docker
