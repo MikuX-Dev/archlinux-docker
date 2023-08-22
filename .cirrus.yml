@@ -17,8 +17,11 @@ task:
     - curl -O https://blackarch.org/strap.sh 
     - bash strap.sh --noconfirm --quiet 
     - pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
+  setup_docker:
+    - systemctl unmask docker.service 
+    - systemctl unmask docker.socket 
+    - systemctl start docker.service
   login_script:
-    - systemctl start docker
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   build_script:
     - docker build -t archiso-builder:latest -f Dockerfile .
