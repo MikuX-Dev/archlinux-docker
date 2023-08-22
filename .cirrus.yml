@@ -12,8 +12,9 @@ task:
   build_and_push_task:
   setup_script: 
     - echo 'Setting up...' 
+    - pacman-key --init
+    - pacman-key --popluate
     - pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
-    - docker buildx create --use --name mybuilder
   login_script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   build_script:

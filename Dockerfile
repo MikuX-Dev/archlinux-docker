@@ -32,9 +32,7 @@ RUN curl -O https://blackarch.org/strap.sh && \
 RUN pacman -Fyy --noconfirm --quiet && \
     pacman -Syy --noconfirm --quiet archlinux-keyring blackarch-keyring
     
-RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot yay vim linux-firmware network-manager-applet net-tools networkmanager ntp 
-
-RUN yay -Syy --noconfirm --needed --quiet mkinitcpio-firmware 
+RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot yay vim lhasa linux-firmware network-manager-applet net-tools networkmanager ntp
 
 #RUN useradd -m builder && echo "builder:builder" | chpasswd
 #USER builder
