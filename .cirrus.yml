@@ -9,6 +9,8 @@ task:
     image: blackarchlinux/blackarch
     cpu: 8
     memory: 32G 
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   build_and_push_task:
   setup_script: 
     - echo 'Setting up...' 
