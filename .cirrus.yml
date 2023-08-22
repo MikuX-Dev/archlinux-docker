@@ -20,3 +20,4 @@ task:
       - docker buildx build -t mikuxdev/archiso-builder:latest -f Dockerfile .
   push_script:
       - docker buildx build -t mikuxdev/archiso-builder:latest --push -f Dockerfile .
+
