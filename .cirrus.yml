@@ -22,5 +22,5 @@ task:
   build_script:
     - docker build -t archiso-builder:latest -f Dockerfile .
   push_script:
-    - docker build -t archiso-builder:latest --push -f Dockerfile .
+    - docker build archiso-builder:latest 
 
