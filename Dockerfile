@@ -1,4 +1,4 @@
-FROM archlinux/archlinux
+FROM archlinux:latest
 
 RUN \ 
 if grep -q "\[multilib\]" /etc/pacman.conf; then \
