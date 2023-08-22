@@ -1,4 +1,4 @@
-FROM archlinux/archlinux
+FROM archlinux:base-devel
 
 RUN \ 
 if grep -q "\[multilib\]" /etc/pacman.conf; then \
@@ -29,9 +29,9 @@ RUN curl -O https://blackarch.org/strap.sh && \
 RUN pacman -Fyy --noconfirm --quiet && \
     pacman -Syy --noconfirm --quiet archlinux-keyring blackarch-keyring
     
-RUN pacman -S --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot
+RUN pacman -S --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot yay vim linux-firmware network-manager-applet net-tools networkmanager ntp 
 
-RUN pacman -S --noconfirm --quiet --needed blackarch
+RUN yay -Syy --noconfirm --needed --quiet mkinitcpio-firmware 
 
 #RUN useradd -m builder && echo "builder:builder" | chpasswd
 #USER builder
