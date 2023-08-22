@@ -18,24 +18,28 @@ jobs:
       - name: Install nassery pkgs
         run: |
           sudo pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
+          
           curl -O https://blackarch.org/strap.sh
           bash strap.sh --noconfirm --quiet
+
           if grep -q "\[multilib\]" /etc/pacman.conf; then 
               sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; 
           else 
-              echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
-          fi
-          if grep -q "\[community\]" /etc/pacman.conf; then \
-              sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
-          else \
-              echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
+              echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; 
           fi
 
-RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
-    locale-gen && \
-    echo "LANG=en_US.UTF-8" > /etc/locale.conf
+          if grep -q "\[community\]" /etc/pacman.conf; then 
+              sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf;
+          else 
+              echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; 
+          fi
 
-RUN echo 'KEYMAP=us' > /etc/vconsole.conf
+          sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen 
+          locale-gen 
+          
+          echo "LANG=en_US.UTF-8" > /etc/locale.conf
+
+          echo 'KEYMAP=us' > /etc/vconsole.conf
 
       - name: Log into registry 
         uses: docker/login-action@v2

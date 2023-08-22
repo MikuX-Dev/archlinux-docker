@@ -1,5 +1,8 @@
 FROM archlinux:base-devel
 
+RUN pacman-key --init && \
+    pacman-key --populate 
+
 RUN \ 
 if grep -q "\[multilib\]" /etc/pacman.conf; then \
     sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
@@ -29,7 +32,7 @@ RUN curl -O https://blackarch.org/strap.sh && \
 RUN pacman -Fyy --noconfirm --quiet && \
     pacman -Syy --noconfirm --quiet archlinux-keyring blackarch-keyring
     
-RUN pacman -S --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot yay vim linux-firmware network-manager-applet net-tools networkmanager ntp 
+RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot yay vim linux-firmware network-manager-applet net-tools networkmanager ntp 
 
 RUN yay -Syy --noconfirm --needed --quiet mkinitcpio-firmware 
 
