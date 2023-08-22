@@ -6,13 +6,12 @@ task:
   name: archiso-builder
   timeout_in: 120m
   container:
-    image: archlinux/archlinux
+    image: blackarchlinux/blackarch
     cpu: 8
     memory: 32G 
   build_and_push_task:
   setup_script: 
-    - echo 'Setting up...' && \
-      pacman -Syy --noconfirm --quiet --needed docker 
+    - echo 'Setting up...' && pacman -Syy --noconfirm --quiet --needed docker 
   login_script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   build_script:
