@@ -9,13 +9,10 @@ task:
     image: blackarchlinux/blackarch
     cpu: 8
     memory: 32G 
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
   build_and_push_task:
   setup_script: 
     - echo 'Setting up...' 
-    - pacman -Syy --noconfirm --quiet --needed base-devel docker docker-buildx 
-    - docker buildx create --use --name mybuilder
+    - pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
   login_script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   build_script:
