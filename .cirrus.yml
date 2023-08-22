@@ -8,14 +8,13 @@ task:
     image: blackarchlinux/blackarch
     cpu: 8
     memory: 32G
-    privileged: true  # Required for Docker-in-Docker
   build_and_push_task:
     setup_script: 
       - echo 'Setting up...'
+      - pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
     login_script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     build_script:
-      - docker build -t mikuxdev/archiso-builder:latest -f Dockerfile .
+      - docker buildx build -t mikuxdev/archiso-builder:latest -f Dockerfile --platform linux/amd64,linux/arm64 .
     push_script:
-      - docker push mikuxdev/archiso-builder:latest
-
+      - docker buildx build -t mikuxdev/archiso-builder:latest --push -f Dockerfile --platform linux/amd64,linux/arm64 .
