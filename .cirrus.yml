@@ -6,7 +6,7 @@ task:
   name: archiso-builder
   timeout_in: 120m
   container:
-    image: archlinux
+    image: archlinux/archlinux
     cpu: 8
     memory: 32G 
   build_and_push_task:
