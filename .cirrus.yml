@@ -1,6 +1,6 @@
 env:
-  DOCKER_USERNAME: mikuxdev
-  DOCKER_PASSWORD: dckr_pat_jD71wrUuhslR65t1Q7deGmLAp5o
+  DOCKER_USERNAME: ENCRYPTED[6a0feabe75269a64d3a56a0b4ed07946372bb2df0da0c534c18a1b221e2023be83220607de65b6497bf7ce491d4fae14]
+  DOCKER_PASSWORD: ENCRYPTED[d7b11201774e9efd2fe281ce0ec647d3c0e0d9f1c3dc1ec0c65e8efed9c5f224ca058ede164a6236c0a9fa6e09d6749c]
 
 task:
     name: archiso-builder
@@ -38,6 +38,8 @@ task:
       - systemctl unmask docker.service
       - systemctl unmask docker.socket
       - systemctl start docker.service
+      - usermod -aG docker $(whoami)
+      - service docker restart
 
     login_script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
