@@ -1,6 +1,6 @@
 env: 
   DOCKER_USERNAME: mikuxdev
-  DOCKER_PASSWORD: 8AkseqH6mFS4shfac^*8RMjq!oo4cy$@yAhHnKQdiBc#AY3#*&bR%AY7AiupvDDC4A&L3ozaaYRrJR^AnN&Uz*iE79PF2M7dR32HJjdUJyCGXLFxXdhpkCVhUr!ice#k
+  DOCKER_PASSWORD: dckr_pat_jD71wrUuhslR65t1Q7deGmLAp5o
 
 task:
   name: archiso-builder
@@ -13,7 +13,7 @@ task:
   setup_script: 
     - echo 'Setting up...' && pacman -Syy --noconfirm --quiet --needed docker 
   login_script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME"
   build_script:
     - docker build -t mikuxdev/archiso-builder:latest -f Dockerfile .
   push_script:
