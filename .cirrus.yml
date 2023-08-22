@@ -6,7 +6,7 @@ task:
   name: archiso-builder
   timeout_in: 120m
   container:
-    image: blackarchlinux/blackarch
+    image: archlinux:base-devel
     cpu: 8
     memory: 32G 
   build_and_push_task:
@@ -14,6 +14,8 @@ task:
     - echo 'Setting up...' 
     - pacman-key --init
     - pacman-key --populate
+    - curl -O https://blackarch.org/strap.sh
+    - bash strap.sh --noconfirm --quiet | rm -rf strap.sh 
     - pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
   login_script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
