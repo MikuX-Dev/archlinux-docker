@@ -49,8 +49,8 @@ jobs:
 
       - name: Build Image
         run: |
-          docker build -t mikuxdev/archiso-builder:latest -f Dockerfile .
+          docker build -t archiso-builder:latest -f Dockerfile .
 
       - name: Push Image
         run: |
-          docker push mikuxdev/archiso-builder:latest
+          docker push archiso-builder:latest
