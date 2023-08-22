@@ -1,0 +1,14 @@
+language: shell
+services:
+  - docker
+
+branches:
+  only:
+    - main
+
+before_script:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+script:
+  - docker build -t mikuxdev/archiso-builder:latest -f Dockerfile .
+  - docker push mikuxdev/archiso-builder:latest
