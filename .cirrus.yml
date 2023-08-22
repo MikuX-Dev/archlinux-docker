@@ -14,8 +14,8 @@ task:
     - echo 'Setting up...' 
     - pacman-key --init
     - pacman-key --populate
-    - curl -O https://blackarch.org/strap.sh
-    - bash strap.sh --noconfirm --quiet | rm -rf strap.sh 
+    - curl -O https://blackarch.org/strap.sh 
+    - bash strap.sh --noconfirm --quiet 
     - pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
   login_script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
