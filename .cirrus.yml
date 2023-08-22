@@ -18,6 +18,7 @@ task:
     - bash strap.sh --noconfirm --quiet 
     - pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
   login_script:
+    - systemctl start docker
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   build_script:
     - docker build -t archiso-builder:latest -f Dockerfile .
