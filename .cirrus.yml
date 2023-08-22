@@ -20,7 +20,7 @@ task:
   login_script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   build_script:
-      - docker buildx build -t mikuxdev/archiso-builder:latest -f Dockerfile .
+    - docker build -t archiso-builder:latest -f Dockerfile .
   push_script:
-      - docker buildx build -t mikuxdev/archiso-builder:latest --push -f Dockerfile .
+    - docker build -t archiso-builder:latest --push -f Dockerfile .
 
