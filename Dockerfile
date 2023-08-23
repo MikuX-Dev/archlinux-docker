@@ -34,9 +34,9 @@ RUN pacman -Fyy --noconfirm --quiet && \
     
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot yay vim lhasa linux-firmware network-manager-applet net-tools networkmanager ntp
 
-#RUN useradd -m builder && echo "builder:builder" | chpasswd
-#USER builder
+RUN useradd -m builder && echo "builder:builder" | chpasswd
+USER builder
 
-#WORKDIR /home/builder
+WORKDIR /home/builder
 
 CMD ["/bin/bash"]
