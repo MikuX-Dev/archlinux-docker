@@ -38,9 +38,9 @@ RUN yes | pacman -Scc
 
 RUN pacman -Syyu
 
-RUN useradd -m builder && echo "builder:builder" | chpasswd
-USER builder
-
-WORKDIR /home/builder
-
+# RUN useradd -m builder && echo "builder:builder" | chpasswd
+# USER builder
+#
+# WORKDIR /home/builder
+#
 CMD ["/bin/bash"]
