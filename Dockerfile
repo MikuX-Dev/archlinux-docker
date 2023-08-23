@@ -32,7 +32,7 @@ RUN curl -O https://blackarch.org/strap.sh && \
 RUN pacman -Fyy --noconfirm --quiet && \
     pacman -Syy --noconfirm --quiet archlinux-keyring blackarch-keyring
     
-RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot yay vim lhasa linux-firmware network-manager-applet net-tools networkmanager ntp
+RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot yay vim lhasa linux-firmware network-manager-applet net-tools networkmanager ntp git docker docker-compose docker-buildx docker-scan docker-machine gcc 
 
 RUN yes | pacman -Scc
 
