@@ -42,10 +42,11 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
 RUN pacman -Syyu
 
 RUN set -xe; \
-    useradd --no-create-home --shell=/bin/false build; \
+    useradd -m --shell=/bin/false build; \
     usermod -L build; \
-    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
-    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers;
+    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; 
+
+RUN git clone https://github.com/MikuX-Dev/archiso.git 
 
 USER build
 
