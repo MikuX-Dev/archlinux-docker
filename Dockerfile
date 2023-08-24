@@ -26,9 +26,9 @@ else \
   sudo echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf; \
 fi
 
-RUN sudo sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
+RUN RUN sudo sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
     sudo locale-gen && \
-    sudo echo "LANG=en_US.UTF-8" > /etc/locale.conf
+    echo "LANG=en_US.UTF-8" | sudo tee /etc/locale.conf > /dev/null
 
 RUN sudo echo 'KEYMAP=us' > /etc/vconsole.conf
 
