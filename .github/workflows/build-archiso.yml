@@ -10,7 +10,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     container:
-      image: mikuxdev/archiso-builder:latest
+      image: archlinux:base-devel
 
     steps:
       - name: Checkout code
