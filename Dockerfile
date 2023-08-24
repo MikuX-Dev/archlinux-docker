@@ -39,11 +39,15 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
 RUN pacman -Scc --noconfirm --quiet
 
 RUN set -xe; \
-    useradd -m -s /bin/bash build; \
-    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers;
+    useradd --no-create-home --shell=/bin/false build; \
+    usermod -L build; \
+    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
+    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers;
 
-USER build
+RUN mkdir -p /build/ && git clone https://github.com/MikuX-Dev/archiso.git /build/archiso
 
-WORKDIR /home/build
+WORKDIR /build/archiso
+
+RUN ./mkarchiso.sh -v -w work -o out slim-iso || mkarchiso -v -w work -o out slim-iso
 
 CMD ["/bin/bash"]
