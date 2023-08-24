@@ -28,8 +28,8 @@ fi
 
 RUN RUN sudo sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
     sudo locale-gen && \
-    echo "LANG=en_US.UTF-8" | sudo tee /etc/locale.conf > /dev/null
-
+    echo "LANG=en_US.UTF-8" | sudo tee /etc/locale.conf 
+    
 RUN sudo echo 'KEYMAP=us' > /etc/vconsole.conf
 
 RUN sudo curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
