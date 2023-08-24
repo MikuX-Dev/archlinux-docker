@@ -36,8 +36,8 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
     fakeroot fakechroot linux-firmware net-tools ntp git docker docker-compose docker-buildx docker-scan docker-machine gcc \
     perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils 
 
-RUN yes | pacman -Scc \
-    rm -rf /var/cache/pacman/pkg/*
+# RUN yes | pacman -Scc \
+#     rm -rf /var/cache/pacman/pkg/*
 
 RUN pacman -Syyu
 
