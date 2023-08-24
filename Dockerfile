@@ -48,6 +48,6 @@ RUN mkdir -p /build/ && git clone https://github.com/MikuX-Dev/archiso.git /buil
 
 WORKDIR /build/archiso
 
-RUN ./mkarchiso.sh -v -w work -o out slim-iso || mkarchiso -v -w work -o out slim-iso
+RUN bash mkarchiso.sh -v -w work -o out slim-iso || mkarchiso -v -w work -o out slim-iso
 
 CMD ["/bin/bash"]
