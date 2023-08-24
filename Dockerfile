@@ -5,16 +5,16 @@ RUN pacman-key --init && \
 
 RUN \ 
 if grep -q "\[multilib\]" /etc/pacman.conf; then \
-    sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
+  sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
 else \
-    echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
+  echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
 fi
 
 RUN \ 
 if grep -q "\[community\]" /etc/pacman.conf; then \
-    sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
+  sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
 else \
-    echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
+  echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
 fi
 
 RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
@@ -31,16 +31,24 @@ RUN curl -O https://blackarch.org/strap.sh && \
 
 RUN pacman -Fyy --noconfirm --quiet && \
     pacman -Syy --noconfirm --quiet archlinux-keyring blackarch-keyring
-    
-RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools fakeroot fakechroot yay vim lhasa linux-firmware network-manager-applet net-tools networkmanager ntp git docker docker-compose docker-buildx docker-scan docker-machine gcc 
 
-RUN yes | pacman -Scc
+RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
+    fakeroot fakechroot linux-firmware net-tools ntp git docker docker-compose docker-buildx docker-scan docker-machine gcc \
+    perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils 
+
+RUN yes | pacman -Scc \
+    rm -rf /var/cache/pacman/pkg/*
 
 RUN pacman -Syyu
 
-# RUN useradd -m builder && echo "builder:builder" | chpasswd
-# USER builder
-#
-# WORKDIR /home/builder
-#
+RUN set -xe; \
+    useradd --no-create-home --shell=/bin/false build; \
+    usermod -L build; \
+    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
+    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers;
+
+USER build
+
+WORKDIR /home/build/
+
 CMD ["/bin/bash"]
