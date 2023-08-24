@@ -25,6 +25,7 @@ RUN echo 'KEYMAP=us' > /etc/vconsole.conf
 
 RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
     sh -c "curl https://archlinux.org/mirrorlist/\?country=all\&protocol=http\&protocol=https\&ip_version=4\&ip_version=6\&use_mirror_status=on -o /etc/pacman.d/mirrorlist && sed -i 's/#S/S/g' /etc/pacman.d/mirrorlist"
+
 RUN curl -O https://blackarch.org/strap.sh && \
     bash strap.sh --noconfirm --quiet 
 
@@ -38,9 +39,8 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
 RUN pacman -Scc --noconfirm --quiet
 
 RUN set -xe; \
-    useradd -mG build; \
-    usermod -L build; \
-    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; 
+    useradd -m -s /bin/bash build; \
+    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers;
 
 USER build
 
