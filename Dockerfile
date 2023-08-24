@@ -1,5 +1,14 @@
 FROM archlinux:base-devel
 
+RUN set -xe; \
+    useradd -m --shell=/bin/false build; \
+    usermod -L build; \
+    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; 
+
+USER build
+
+WORKDIR /home/build/
+
 RUN pacman-key --init && \
     pacman-key --populate 
 
@@ -35,18 +44,6 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
     fakeroot fakechroot linux-firmware net-tools ntp git docker docker-compose docker-buildx docker-scan docker-machine gcc \
     perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils 
 
-# RUN yes | pacman -Scc \
-#     rm -rf /var/cache/pacman/pkg/*
-
-RUN pacman -Syyu
-
-RUN set -xe; \
-    useradd -m --shell=/bin/false build; \
-    usermod -L build; \
-    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; 
-
-USER build
-
-WORKDIR /home/build/
+RUN pacman -Scc --noconfirm --quiet
 
 CMD ["/bin/bash"]
