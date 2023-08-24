@@ -42,7 +42,7 @@ jobs:
           curl -O https://blackarch.org/strap.sh
           bash strap.sh --noconfirm --quiet
 
-          sudo pacman -Syyu
+          sudo pacman -Syyu --noconfirm --quiet
 
       - name: Log into registry 
         uses: docker/login-action@v2
