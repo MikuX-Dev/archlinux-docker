@@ -46,8 +46,6 @@ RUN set -xe; \
     usermod -L build; \
     echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; 
 
-RUN git clone https://github.com/MikuX-Dev/archiso.git 
-
 USER build
 
 WORKDIR /home/build/
