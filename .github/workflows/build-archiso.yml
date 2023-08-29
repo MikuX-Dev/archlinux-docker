@@ -19,30 +19,28 @@ jobs:
       - name: Setup  
         run: |
           if grep -q "\[multilib\]" /etc/pacman.conf; then 
-            sudo sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; 
+            sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; 
           else 
-            sudo echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; 
+            echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; 
           fi
 
           if grep -q "\[community\]" /etc/pacman.conf; then 
-            sudo sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf;
+            sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf;
           else 
-            sudo echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; 
+            echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; 
           fi
 
-          sudo sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen 
-          sudo locale-gen 
+          sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen 
+          locale-gen 
           
-          sudo echo "LANG=en_US.UTF-8" > /etc/locale.conf
+          echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
-          sudo echo 'KEYMAP=us' > /etc/vconsole.conf
+          echo 'KEYMAP=us' > /etc/vconsole.conf
 
-          sudo pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx 
-          
-          sudo curl -O https://blackarch.org/strap.sh
-          sudo bash strap.sh --noconfirm --quiet
+          curl -O https://blackarch.org/strap.sh
+          bash strap.sh --noconfirm --quiet
 
-          sudo pacman -Syyu --noconfirm --quiet
+          pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx
 
       - name: Log into registry 
         uses: docker/login-action@v2
