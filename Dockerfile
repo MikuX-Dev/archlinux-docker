@@ -30,12 +30,12 @@ RUN echo 'KEYMAP=us' > /etc/vconsole.conf
 RUN curl -O https://blackarch.org/strap.sh && \
     bash strap.sh --noconfirm --quiet && \
     rm -rf strap.sh && \
-    pacman-key --init && \
-    pacman-key --populate archlinux-keyring blackarch-keyring && \
-    pacman -Syyu --noconfirm --quiet 
-
-RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
+    curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
     sh -c "curl https://archlinux.org/mirrorlist/\?country=all\&protocol=http\&protocol=https\&ip_version=4\&ip_version=6\&use_mirror_status=on -o /etc/pacman.d/mirrorlist && sed -i 's/#S/S/g' /etc/pacman.d/mirrorlist"
+    
+RUN pacman-key --init && \
+    pacman-key --populate && \
+    pacman -Syyu --noconfirm --quiet 
 
 RUN pacman -Syy --noconfirm --quiet --needed base base-devel archiso mkinitcpio mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot linux-firmware net-tools ntp git docker docker-compose docker-buildx docker-scan docker-machine gcc \
