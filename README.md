@@ -1,7 +1,5 @@
-## The ArchISO Builder with BlackArch is a powerful tool that allows you to create custom Arch Linux-based ISO images with the inclusion of the BlackArch penetration testing tools. This tool is specifically designed to run within a Docker environment, providing a convenient and isolated environment for building your custom ISO images.
-
-## Status
-[![Build and Push Arch ISO Docker Image](https://github.com/MikuX-Dev/docker-archiso/actions/workflows/build-archiso.yml/badge.svg)](https://github.com/MikuX-Dev/docker-archiso/actions/workflows/build-archiso.yml)
+## The ArchISO Builder.
+---
 
 ### Here is a description of the ArchISO Builder with BlackArch in Docker:
 
