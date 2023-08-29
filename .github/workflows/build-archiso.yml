@@ -56,4 +56,4 @@ jobs:
 
       - name: Push Image
         run: |
-          docker push mikuxdev/archiso-builder:latest
+          docker push docker.io/mikuxdev/archiso-builder:latest
