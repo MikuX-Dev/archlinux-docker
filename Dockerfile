@@ -1,5 +1,9 @@
 FROM archlinux:base-devel
 
+env work="$HOME/iso_build/" && \
+    out=$HOME/iso_out/ && \
+    iso=$HOME/iso/ 
+
 RUN pacman-key --init && \
     pacman-key --populate 
 
@@ -27,27 +31,23 @@ RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackar
     sh -c "curl https://archlinux.org/mirrorlist/\?country=all\&protocol=http\&protocol=https\&ip_version=4\&ip_version=6\&use_mirror_status=on -o /etc/pacman.d/mirrorlist && sed -i 's/#S/S/g' /etc/pacman.d/mirrorlist"
 
 RUN curl -O https://blackarch.org/strap.sh && \
-    bash strap.sh --noconfirm --quiet 
+    bash strap.sh --noconfirm --quiet && \
+    rm -rf strap.sh
 
 RUN pacman -Fyy --noconfirm --quiet && \
     pacman -Syy --noconfirm --quiet archlinux-keyring blackarch-keyring
 
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot linux-firmware net-tools ntp git docker docker-compose docker-buildx docker-scan docker-machine gcc \
-    perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils 
+    perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc
 
-RUN pacman -Scc --noconfirm --quiet
+RUN pacman -Scc --noconfirm --quiet && \
+    rm -rf /var/cache/pacman/pkg/* 
 
 RUN set -xe; \
     useradd --no-create-home --shell=/bin/false build; \
     usermod -L build; \
     echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
     echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers;
-
-RUN mkdir -p /build/ && git clone https://github.com/MikuX-Dev/archiso.git /build/archiso
-
-WORKDIR /build/archiso
-
-RUN bash -c 'if ! bash mkarchiso.sh -v -w work -o out slim-iso; then mkarchiso -v -w work -o out slim-iso; fi'
 
 CMD ["/bin/bash"]
