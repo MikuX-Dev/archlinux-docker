@@ -1,5 +1,4 @@
 ## The ArchISO Builder.
----
 
 ### Here is a description of the ArchISO Builder with BlackArch in Docker:
 
