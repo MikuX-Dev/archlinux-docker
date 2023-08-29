@@ -33,11 +33,9 @@ RUN curl -O https://blackarch.org/strap.sh && \
     curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
     sh -c "curl https://archlinux.org/mirrorlist/\?country=all\&protocol=http\&protocol=https\&ip_version=4\&ip_version=6\&use_mirror_status=on -o /etc/pacman.d/mirrorlist && sed -i 's/#S/S/g' /etc/pacman.d/mirrorlist"
     
-RUN pacman-key --init && \
-    pacman-key --populate && \
-    pacman -Syyu --noconfirm --quiet 
+RUN pacman -Syyu --noconfirm --quiet 
 
-RUN pacman -Syy --noconfirm --quiet --needed base base-devel archiso mkinitcpio mkinitcpio-archiso devtools dosfstools mtools \
+RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot linux-firmware net-tools ntp git docker docker-compose docker-buildx docker-scan docker-machine gcc \
     perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc systemd
 
