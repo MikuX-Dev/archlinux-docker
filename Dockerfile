@@ -31,8 +31,7 @@ RUN curl -O https://blackarch.org/strap.sh && \
     bash strap.sh --noconfirm --quiet && \
     rm -rf strap.sh && \
     pacman-key --init && \
-    pacman-key --populate && \
-    pacman-key --refresh-keys && \
+    pacman-key --populate archlinux-keyring blackarch-keyring && \
     pacman -Syyu --noconfirm --quiet 
 
 RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
