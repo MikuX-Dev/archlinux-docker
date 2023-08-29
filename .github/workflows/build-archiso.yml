@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: archlinux:base-devel
-
-    steps:
-      - name: Checkout code
+   
+    steps: 
+      - name: checkout code
         uses: actions/checkout@v3
-
-      - name: Setup  
+      
+      - name: setup
         run: |
           sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen 
           locale-gen 
@@ -27,8 +27,8 @@ jobs:
 
           echo 'KEYMAP=us' > /etc/vconsole.conf
 
+          pacman-key --init && pacman-key --populate
           curl -O https://blackarch.org/strap.sh | sh
-
           pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx
 
       - name: Log into registry 
