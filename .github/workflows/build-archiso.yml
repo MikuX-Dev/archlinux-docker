@@ -38,7 +38,7 @@ jobs:
           echo 'KEYMAP=us' > /etc/vconsole.conf
 
           curl -O https://blackarch.org/strap.sh
-          bash strap.sh --noconfirm --quiet
+          bash strap.sh --noconfirm
 
           pacman -Syyu --noconfirm --quiet --needed base-devel docker docker-buildx
 
