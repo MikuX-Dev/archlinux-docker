@@ -1,8 +1,8 @@
 FROM archlinux:base-devel
 
-env work="$HOME/iso_build/" && \
-    out=$HOME/iso_out/ && \
-    iso=$HOME/iso/ 
+#ENV work=$HOME/iso_build/
+#ENV out=$HOME/iso_out/
+#ENV iso=$HOME/iso/ 
 
 RUN pacman-key --init && \
     pacman-key --populate 
@@ -34,8 +34,7 @@ RUN curl -O https://blackarch.org/strap.sh && \
     bash strap.sh --noconfirm --quiet && \
     rm -rf strap.sh
 
-RUN pacman -Fyy --noconfirm --quiet && \
-    pacman -Syy --noconfirm --quiet archlinux-keyring blackarch-keyring
+RUN pacman -Syyu --noconfirm --quiet
 
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot linux-firmware net-tools ntp git docker docker-compose docker-buildx docker-scan docker-machine gcc \
@@ -44,10 +43,14 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
 RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/* 
 
-RUN set -xe; \
-    useradd --no-create-home --shell=/bin/false build; \
-    usermod -L build; \
-    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
-    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers;
+RUN useradd -m -d /iso -G wheel -g users builder -s /bin/bash && \
+    echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+USER builder
+
+WORKDIR /src
+
+COPY --chown=builder:users . .
 
 CMD ["/bin/bash"]
