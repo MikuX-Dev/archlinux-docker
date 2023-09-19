@@ -1,18 +1,53 @@
-## The ArchISO Builder.
+# Personal ArchLinux Docker Setup for Development Environment
 
-### Here is a description of the ArchISO Builder with BlackArch in Docker:
+## This Docker setup provides a ready-to-use ArchLinux environment for development purposes. It includes essential tools and packages commonly used in development workflows. This image is based on ArchLinux and is designed to be used as a containerized development environment.
 
-#### Custom ISO Creation: 
-The ArchISO Builder with BlackArch enables you to create customized ISO images of Arch Linux with the added benefit of including the extensive set of BlackArch penetration testing tools. This allows you to build ISO images tailored to your specific needs, whether it's for security testing, forensics, or other purposes.
+### Usage
+Build the Docker Image
+To build the Docker image, execute the following command:
 
-#### Docker-based Environment: 
-By utilizing Docker, the ArchISO Builder with BlackArch provides a lightweight and isolated environment for the ISO building process. Docker ensures consistent and reproducible builds, making it easier to manage dependencies and configurations.
+```bash
+Copy code
+docker build -t arch-dev .
+```
 
-#### BlackArch Integration: 
-BlackArch is a popular repository of security and penetration testing tools for Arch Linux. With the ArchISO Builder with BlackArch, you can effortlessly integrate the entire BlackArch repository into your custom ISO image, giving you immediate access to a comprehensive suite of security tools.
+### Run the Docker Container
+To start a container based on this image, run:
 
-#### Automated Build Process: 
-The ArchISO Builder with BlackArch streamlines the ISO building process by automating many of the steps involved. It provides a simplified workflow that handles tasks like package installation, configuration, and image creation, saving you time and effort.
+```bash
+Copy code
+docker run -it --rm arch-dev
+```
+This will drop you into a shell within the ArchLinux environment.
+
+## Accessing Your Development Files
+The `work` directory in the container is mapped to the `work` directory on your local machine. You can place your project files here, and they will be accessible from both inside and outside the container.
+
+## Using Zsh
+The default shell in this environment is Zsh. It's pre-configured with some aliases and settings for a smoother development experience.
+
+## Additional Configuration
+Feel free to customize the environment further by adding or removing packages in the Dockerfile according to your needs.
+
+### Dockerfile Explanation
+Below is an explanation of the key sections in the Dockerfile:
+
+- Base Image: This Dockerfile is based on archlinux/base:latest.
+
+- Locale Configuration: Sets up the system locale and keymap.
+
+- Package Management: Updates package databases, adds the [multilib] and [community] repositories if not present, and installs necessary packages.
+
+- Setting Up BlackArch Repository: Adds BlackArch repository for additional tools.
+
+- Installing Docker: Installs Docker and related tools.
+
+- Cleaning Up: Cleans up package cache to reduce image size.
+
+- Copying Configuration Files: Copies custom Zsh configuration and the work directory.
+
+## Contributing
+If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
 
 ---
-#### In summary, the ArchISO Builder with BlackArch in Docker is a versatile and convenient tool for creating custom Arch Linux-based ISO images with the inclusion of the comprehensive BlackArch penetration testing tools. It empowers you to build tailored ISO images for your security testing and other needs, all within a Docker-based environment.
+Note: This setup is tailored to personal preferences. Feel free to modify it to suit your own needs and preferences.
