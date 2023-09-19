@@ -41,13 +41,3 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
 
 RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/*
-
-COPY .zshrc .zshrc
-COPY .zsh_aliases .zsh_aliases
-COPY .zsh_history .zsh_history
-COPY work work
-
-FROM base
-SHELL ["/bin/zsh", "-c"]
-WORKDIR /root/work/
-CMD ["/bin/zsh"]
