@@ -1,4 +1,4 @@
-name: Build and Push Arch ISO Docker Image
+name: Build and Push Archlinux Docker Image
 
 on:
   push:
