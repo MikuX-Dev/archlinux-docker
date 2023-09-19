@@ -7,14 +7,14 @@ Build the Docker Image
 To build the Docker image, execute the following command:
 
 ```bash
-docker build -t arch-dev .
+docker build -t dev-env .
 ```
 
 ### Run the Docker Container
 To start a container based on this image, run:
 
 ```bash
-docker run -it --rm arch-dev
+docker run -it --rm dev-env
 ```
 This will drop you into a shell within the ArchLinux environment.
 

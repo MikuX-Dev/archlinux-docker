@@ -1,6 +1,6 @@
 FROM archlinux/base:latest
 WORKDIR /root
-SHELL ["/bin/sh", "-c"]
+SHELL ["/bin/sh"]
 
 RUN pacman-key --init && \
     pacman-key --populate
