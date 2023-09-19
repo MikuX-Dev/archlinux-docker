@@ -1,5 +1,5 @@
 FROM archlinux:base-devel
-SHELL ["/bin/sh"]
+SHELL ["/bin/bash"]
 
 RUN pacman-key --init && \
     pacman-key --populate
