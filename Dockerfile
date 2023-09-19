@@ -4,9 +4,9 @@ FROM archlinux:base-devel
 # Set the shell to bash
 SHELL ["/bin/bash"]
 
-# Initialize and populate Pacman keyring
-RUN pacman-key --init && \
-    pacman-key --populate
+# Update the system and install essential packages
+RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl archlinux-keyring && \
+    reflector --latest 10 -f 10 -n 10 --sort age --sort rate --save /etc/pacman.d/mirrorlist
 
 # Enable multilib repository if not already enabled
 RUN \
@@ -32,6 +32,10 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
 # Set the keymap to US
 RUN echo 'KEYMAP=us' > /etc/vconsole.conf
 
+# Initialize and populate Pacman keyring
+RUN pacman-key --init && \
+    pacman-key --populate
+
 # Configure Pacman repositories
 RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
     sh -c "curl https://archlinux.org/mirrorlist/\?country=all\&protocol=http\&protocol=https\&ip_version=4\&ip_version=6\&use_mirror_status=on -o /etc/pacman.d/mirrorlist && sed -i 's/#S/S/g' /etc/pacman.d/mirrorlist"
@@ -39,9 +43,7 @@ RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackar
 # Install essential packages and update mirrors
 RUN curl -O https://blackarch.org/strap.sh && \
     bash strap.sh --noconfirm --quiet && \
-    rm -rf strap.sh && \
-    pacman -Syyu --noconfirm --quiet --needed reflector rsync curl && \
-    reflector --latest 10 -f 10 -n 10 --sort age --sort rate --save /etc/pacman.d/mirrorlist
+    rm -rf strap.sh
 
 # Install a comprehensive list of packages
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
