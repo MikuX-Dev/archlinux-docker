@@ -1,4 +1,4 @@
-FROM archlinux/base:latest
+FROM archlinux:base-devel
 SHELL ["/bin/sh"]
 
 RUN pacman-key --init && \
@@ -31,7 +31,7 @@ RUN curl -O https://blackarch.org/strap.sh && \
     bash strap.sh --noconfirm --quiet && \
     rm -rf strap.sh
 
-RUN pacman -Syyu --noconfirm --quiet
+RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync && reflector --latest 10 -f 10 -n 10 --sort age --sort rate --save /etc/pacman.d/mirrorlist
 
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot linux-firmware net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
