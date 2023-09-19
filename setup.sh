@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build -t malware-dev .
+docker build -t dev-env .
