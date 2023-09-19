@@ -34,7 +34,7 @@ jobs:
           else
             echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf;
           fi
-          pacman-key --init && pacman-key --populate
+          pacman -Syy --noconfirm --quiet --needed archlinux-keyring
           curl -O https://blackarch.org/strap.sh | sh
           curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
           sh -c "curl https://archlinux.org/mirrorlist/\?country=all\&protocol=http\&protocol=https\&ip_version=4\&ip_version=6\&use_mirror_status=on -o /etc/pacman.d/mirrorlist && sed -i 's/#S/S/g' /etc/pacman.d/mirrorlist"

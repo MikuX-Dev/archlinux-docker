@@ -40,7 +40,7 @@ RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackar
 RUN curl -O https://blackarch.org/strap.sh && \
     bash strap.sh --noconfirm --quiet && \
     rm -rf strap.sh && \
-    pacman -Syyu --noconfirm --quiet --needed reflector rsync && \
+    pacman -Syyu --noconfirm --quiet --needed reflector rsync curl && \
     reflector --latest 10 -f 10 -n 10 --sort age --sort rate --save /etc/pacman.d/mirrorlist
 
 # Install a comprehensive list of packages
