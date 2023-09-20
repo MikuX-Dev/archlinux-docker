@@ -1,28 +1,28 @@
 # Use the Arch Linux base image with development tools
 FROM archlinux:base-devel
 
-# Set the shell to bash
-SHELL ["/bin/bash"]
+RUN pacman-key --init && \
+    pacman-key --populate
 
-# Configure the locale settings
+RUN \
+if grep -q "\[multilib\]" /etc/pacman.conf; then \
+  sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
+else \
+  echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
+fi
+
+RUN \
+if grep -q "\[community\]" /etc/pacman.conf; then \
+  sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
+else \
+  echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
+fi
+
 RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
     locale-gen && \
     echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
-# Set the keymap to US
 RUN echo 'KEYMAP=us' > /etc/vconsole.conf
-
-RUN \
-if grep -q "\[multilib\]" /etc/pacman.conf; then \
-    sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
-else \
-    echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
-fi \
-if grep -q "\[community\]" /etc/pacman.conf; then \
-    sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
-else \
-    echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
-fi
 
 # Update the system and install essential packages
 RUN pacman -Syy --noconfirm --quiet --needed archlinux-keyring
@@ -58,3 +58,5 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
 # Clean up the Pacman cache
 RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/*
+
+CMD ["/bin/bash"]
