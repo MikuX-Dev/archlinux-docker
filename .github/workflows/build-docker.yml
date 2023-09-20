@@ -47,7 +47,7 @@ jobs:
 
       - name: Build Image
         run: |
-          docker build -t mikuxdev/archlnux:latest -f Dockerfile .
+          docker build -t mikuxdev/archlinux:latest -f Dockerfile .
 
       - name: Push Image
         run: |
