@@ -49,14 +49,20 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
     perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
     nasm yasm yarn cargo bash ripgrep nodejs npm wget gzip curl neovim man-pages man-db vim zsh tmux ack xarchiver p7zip zip \
     unzip gzip tar bzip3 unrar xz zstd archiso f2fs-tools automake gawk gammu gnome-keyring mtools dosfstools devtools multilib-devel npm \
-    qemu-tools qemu-emulators-full qemu-system-x86-firmware cargo make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp \
-    rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting \
-    zsh-completions bash-completion xdg-user-dirs-gtk xdg-desktop-portal-gtk openssh gnupg arch-wiki-docs pkgfile intel-ucode ntfs-3g \
-    base smartmontools base-devel linux-lts-docs linux-hardened-docs gvfs-mtp gvfs apache udisks2 cronie irqbalance plocate arch-install-scripts \
-    bind brltty broadcom-wl clonezilla darkhttpd diffutils dmraid dnsmasq edk2-shell profile-sync-daemon pacman-contrib pkgfile hexedit
+    cargo make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed \
+    zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting zsh-completions bash-completion xdg-user-dirs-gtk \
+    xdg-desktop-portal-gtk openssh gnupg arch-wiki-docs pkgfile intel-ucode ntfs-3g base smartmontools base-devel linux-lts-docs \
+    linux-hardened-docs gvfs-mtp gvfs apache udisks2 cronie irqbalance plocate arch-install-scripts bind brltty broadcom-wl \
+    clonezilla darkhttpd diffutils dmraid dnsmasq edk2-shell profile-sync-daemon pacman-contrib pkgfile hexedit
+
+# Install the AUR helper
+RUN git clone https://aur.archlinux.org/yay-bin.git yay-bin && \
+    cd yay-bin && \
+    makepkg -si --noconfirm --quiet && \
+    rm -rf yay-bin
+
+# Install the AUR packages
 
 # Clean up the Pacman cache
 RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/*
-
-CMD ["/bin/bash"]
