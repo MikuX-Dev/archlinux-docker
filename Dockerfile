@@ -4,12 +4,6 @@ FROM archlinux:base-devel
 # Set the shell to bash
 SHELL ["/bin/bash"]
 
-# Enable multilib repository if not already enabled
-RUN grep -q "\[multilib\]" /etc/pacman.conf || echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
-
-# Enable community repository if not already enabled
-RUN grep -q "\[community\]" /etc/pacman.conf || echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
-
 # Configure the locale settings
 RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
     locale-gen && \
@@ -17,6 +11,18 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
 
 # Set the keymap to US
 RUN echo 'KEYMAP=us' > /etc/vconsole.conf
+
+RUN \
+if grep -q "\[multilib\]" /etc/pacman.conf; then \
+    sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
+else \
+    echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
+fi \
+if grep -q "\[community\]" /etc/pacman.conf; then \
+    sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
+else \
+    echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
+fi
 
 # Update the system and install essential packages
 RUN pacman -Syy --noconfirm --quiet --needed archlinux-keyring
