@@ -34,15 +34,6 @@ RUN pacman-key --init && \
 RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl && \
     reflector --latest 10 -f 10 -n 10 --age 10 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
 
-# Configure Pacman repositories
-# RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist
-    #sh -c "curl https://archlinux.org/mirrorlist/\?country=all\&protocol=http\&protocol=https\&ip_version=4\&ip_version=6\&use_mirror_status=on -o /etc/pacman.d/mirrorlist && sed -i 's/#S/S/g' /etc/pacman.d/mirrorlist"
-
-# Install essential packages and update mirrors
-# RUN curl -O https://blackarch.org/strap.sh && \
-#      bash strap.sh --noconfirm --quiet && \
-#      rm -rf strap.sh
-
 # Install a comprehensive list of packages
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot linux-firmware net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
@@ -53,7 +44,7 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
     zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting zsh-completions bash-completion xdg-user-dirs-gtk \
     xdg-desktop-portal-gtk openssh gnupg arch-wiki-docs pkgfile intel-ucode ntfs-3g base smartmontools base-devel linux-lts-docs \
     linux-hardened-docs gvfs-mtp gvfs apache udisks2 cronie irqbalance plocate arch-install-scripts bind brltty broadcom-wl \
-    clonezilla darkhttpd diffutils dmraid dnsmasq edk2-shell profile-sync-daemon pacman-contrib pkgfile hexedit yay
+    clonezilla darkhttpd diffutils dmraid dnsmasq edk2-shell profile-sync-daemon pacman-contrib pkgfile hexedit
 
 # Clean up the Pacman cache
 RUN pacman -Scc --noconfirm --quiet && \
