@@ -31,8 +31,8 @@ RUN pacman -Syy --noconfirm --quiet --needed archlinux-keyring
 RUN pacman-key --init && \
     pacman-key --populate
 
-RUN RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl && \
-    reflector --latest 50 --age 6 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
+RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl && \
+    reflector --latest 10 -f 10 -n 10 --age 10 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
 
 # Configure Pacman repositories
 # RUN curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist

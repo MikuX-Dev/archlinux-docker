@@ -37,7 +37,7 @@ jobs:
           pacman -Syy --noconfirm --quiet --needed reflector rsync curl archlinux-keyring
           curl -O https://blackarch.org/strap.sh | sh
           curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist && \
-          reflector --latest 10 -f 10 -n 10 --sort age --sort rate --save /etc/pacman.d/mirrorlist
+          reflector --latest 10 -f 10 -n 10 --age 10 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
           pacman -Syy --noconfirm --quiet --needed base-devel docker docker-buildx
 
       - name: Log into registry
