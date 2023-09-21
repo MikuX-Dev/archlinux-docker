@@ -44,7 +44,7 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
     zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting zsh-completions bash-completion xdg-user-dirs-gtk \
     xdg-desktop-portal-gtk openssh gnupg arch-wiki-docs pkgfile intel-ucode ntfs-3g base smartmontools base-devel linux-lts-docs \
     linux-hardened-docs gvfs-mtp gvfs apache udisks2 cronie irqbalance plocate arch-install-scripts bind brltty broadcom-wl \
-    clonezilla darkhttpd diffutils dmraid dnsmasq edk2-shell profile-sync-daemon pacman-contrib pkgfile hexedit exa golang gofmt python-virtualenv \
+    clonezilla darkhttpd diffutils dmraid dnsmasq edk2-shell profile-sync-daemon pacman-contrib pkgfile hexedit exa python-virtualenv \
     nim zig python-pipenv
 
 # Clean up the Pacman cache
