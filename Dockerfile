@@ -37,7 +37,7 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
 
 # Install BlackArch keyring and configure pacman
 RUN curl -O https://blackarch.org/strap.sh | sh strap.sh --noconfirm --quiet && rm -rf strap.sh && \
-    curl -o /etc/pacman.d/blackarch-mirrorlist https://raw.githubusercontent.com/MikuX-Dev/archlinux-docker/main/blackarch-mirrorlist && \
+    #curl -o /etc/pacman.d/blackarch-mirrorlist https://raw.githubusercontent.com/MikuX-Dev/archlinux-docker/main/blackarch-mirrorlist && \
     pacman -Syyu --noconfirm --quiet --needed
 
 # Install a comprehensive list of packages
