@@ -35,10 +35,7 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl && \
     reflector --latest 10 -f 10 -n 10 --age 10 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
 
 # Blackarch strap.sh
-RUN curl -O https://blackarch.org/strap.sh \
-    echo 5ea40d49ecd14c2e024deecf90605426db97ea0c strap.sh | sha1sum -c \
-    chmod +x strap.sh \
-    ./strap.sh --noconfirm --quiet \
+RUN curl -O https://blackarch.org/strap.sh | sh --noconfirm \
     rm -rf strap.sh \
     curl https://raw.githubusercontent.com/MikuX-Dev/archlinux-docker/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist \
     pacman -Syyu --noconfirm --quiet --needed
