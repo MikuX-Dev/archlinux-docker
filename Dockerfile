@@ -34,6 +34,15 @@ RUN pacman-key --init && \
 RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl && \
     reflector --latest 10 -f 10 -n 10 --age 10 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
 
+# Blackarch strap.sh
+RUN curl -O https://blackarch.org/strap.sh \
+    echo 5ea40d49ecd14c2e024deecf90605426db97ea0c strap.sh | sha1sum -c \
+    chmod +x strap.sh \
+    ./strap.sh --noconfirm --quiet \
+    rm -rf strap.sh \
+    curl https://raw.githubusercontent.com/MikuX-Dev/archlinux-docker/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist \
+    pacman -Syyu --noconfirm --quiet --needed
+
 # Install a comprehensive list of packages
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot linux-firmware net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
@@ -45,7 +54,7 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
     xdg-desktop-portal-gtk openssh gnupg arch-wiki-docs pkgfile intel-ucode ntfs-3g base smartmontools base-devel linux-lts-docs \
     linux-hardened-docs gvfs-mtp gvfs apache udisks2 cronie irqbalance plocate arch-install-scripts bind brltty broadcom-wl \
     clonezilla darkhttpd diffutils dmraid dnsmasq edk2-shell profile-sync-daemon pacman-contrib pkgfile hexedit exa python-virtualenv \
-    nim zig python-pipenv
+    nim zig python-pipenv torctl
 
 # Clean up the Pacman cache
 RUN pacman -Scc --noconfirm --quiet && \
