@@ -36,7 +36,9 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
     pacman -Syy
 
 # Install BlackArch keyring and configure pacman
-RUN curl -O https://blackarch.org/strap.sh | sh && \
+RUN curl -O https://blackarch.org/strap.sh && \
+    bash strap.sh --noconfirm --quiet && \
+    rm -rf strap.sh && \
     pacman -Syyu --noconfirm --quiet --needed
 
 # Install a comprehensive list of packages
