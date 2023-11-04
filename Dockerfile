@@ -43,7 +43,8 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
 
 # Install a comprehensive list of packages
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
-    fakeroot fakechroot linux-firmware net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
+    fakeroot fakechroot linux-firmware linux-firmware-whence linux-firmware-qlogic linux-firmware-qcom linux-firmware-nfp llinux-firmware-marvell \ 
+    linux-firmware-marvell linux-firmware-liquidio linux-firmware-bnx2x net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
     perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
     nasm yasm yarn cargo bash ripgrep nodejs npm wget gzip curl neovim man-pages man-db vim zsh tmux ack xarchiver p7zip zip \
     unzip gzip tar bzip3 unrar xz zstd archiso f2fs-tools automake gawk gammu gnome-keyring mtools dosfstools devtools multilib-devel npm \
