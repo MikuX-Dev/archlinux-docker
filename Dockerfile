@@ -33,7 +33,7 @@ RUN pacman-key --init && \
 
 RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
     reflector --latest 10 -f 10 -n 10 --age 10 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist && \
-    pacman -Syy
+    pacman -Syyu -mkinitcpio-firmware/
 
 # Install BlackArch keyring and configure pacman
 # RUN curl -O https://blackarch.org/strap.sh && \
@@ -42,13 +42,18 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
     # pacman -Syyu --noconfirm --quiet --needed
 
 # Install a comprehensive list of packages
-RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
-    fakeroot fakechroot linux-firmware linux-firmware-whence linux-firmware-qlogic linux-firmware-qcom linux-firmware-nfp llinux-firmware-marvell \
-    linux-firmware-marvell linux-firmware-liquidio linux-firmware-bnx2x net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
+RUN pacman -S --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
+    fakeroot fakechroot net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
     perl automake curl sed squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
-    nasm yasm yarn bash ripgrep wget gzip curl xarchiver p7zip zip \
+    nasm yasm yarn bash ripgrep wget gzip curl xarchiver p7zip zip git linux-firmware \
     unzip gzip tar bzip3 unrar xz zstd archiso f2fs-tools automake gawk gammu gnome-keyring multilib-devel \
     make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed 
+
+# firmware
+RUN git clone https://aur.archlinux.org/mkinitcpio-firmware.git && \
+    cd mkinitcpio-firmware && \
+    makepkg -si --noconfirm --quiet && \
+    cd .. && rm -rf mkinitcpio-firmware
 
 # Clean up the Pacman cache
 RUN pacman -Scc --noconfirm --quiet && \
