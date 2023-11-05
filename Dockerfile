@@ -75,4 +75,4 @@ COPY --chown=builder:users . .
 # Run entrypoint
 #ENTRYPOINT ["mkarchiso"]
 
-#CMD ["-v", "-w", "work/", "-o", "out/", "profile/"]
+CMD ["sudo", "mkarchiso", "-v", "-w", "work/", "-o", "out/", "profile/"]
