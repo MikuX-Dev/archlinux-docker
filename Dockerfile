@@ -32,8 +32,8 @@ RUN pacman-key --init && \
     pacman-key --populate
 
 RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
-    reflector --latest 10 -f 10 -n 10 --age 10 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist && \
-    pacman -Syyu -mkinitcpio-firmware/
+    reflector --download-timeout 25 -l 10 -f 10 -a 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && \
+    pacman -Syyu
 
 # Install BlackArch keyring and configure pacman
 # RUN curl -O https://blackarch.org/strap.sh && \
