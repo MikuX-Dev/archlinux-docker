@@ -52,7 +52,7 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
 # firmware
 RUN git clone https://aur.archlinux.org/mkinitcpio-firmware.git && \
     cd mkinitcpio-firmware && \
-    makepkg -si --noconfirm --quiet && \
+    makepkg -si --noconfirm && \
     cd .. && rm -rf mkinitcpio-firmware
 
 # Clean up the Pacman cache
