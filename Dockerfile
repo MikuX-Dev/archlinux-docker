@@ -33,7 +33,7 @@ RUN pacman-key --init && \
 
 RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
     reflector --download-timeout 25 -l 10 -f 10 -a 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && \
-    pacman -Syyu
+    pacman -Syy
 
 # Install BlackArch keyring and configure pacman
 # RUN curl -O https://blackarch.org/strap.sh && \
@@ -42,7 +42,7 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
     # pacman -Syyu --noconfirm --quiet --needed
 
 # Install a comprehensive list of packages
-RUN pacman -S --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
+RUN pacman -Syu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
     perl automake curl sed squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
     nasm yasm yarn bash ripgrep wget gzip curl xarchiver p7zip zip git linux-firmware \
