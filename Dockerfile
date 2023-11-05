@@ -32,7 +32,7 @@ RUN pacman-key --init && \
     pacman-key --populate
 
 RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
-    reflector --download-timeout 25 -l 10 -f 10 -a 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && \
+    reflector --latest 10 -f 10 -n 10 --age 10 --protocol https --download-timeout 25 --sort rate --save /etc/pacman.d/mirrorlist && \
     pacman -Syy
 
 # Install BlackArch keyring and configure pacman
@@ -42,12 +42,12 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
     # pacman -Syyu --noconfirm --quiet --needed
 
 # Install a comprehensive list of packages
-RUN pacman -Syu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
-    fakeroot fakechroot net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
-    perl automake curl sed squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
-    nasm yasm yarn bash ripgrep wget gzip curl xarchiver p7zip zip git linux-firmware \
-    unzip gzip tar bzip3 unrar xz zstd archiso f2fs-tools automake gawk gammu gnome-keyring multilib-devel \
-    make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed 
+RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
+    fakeroot fakechroot linux-firmware net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
+    perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
+    nasm yasm yarn cargo bash ripgrep nodejs npm wget gzip curl neovim man-pages man-db vim zsh tmux ack xarchiver p7zip zip \
+    unzip gzip tar bzip3 unrar xz zstd f2fs-tools automake gawk gammu gnome-keyring mtools dosfstools devtools multilib-devel npm \
+    make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed
 
 # firmware
 RUN git clone https://aur.archlinux.org/mkinitcpio-firmware.git && \
