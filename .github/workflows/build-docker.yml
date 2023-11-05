@@ -2,9 +2,9 @@ name: Build and Push Archlinux Docker Image
 
 on:
   push:
-    branches: [ main ]
+    branches: [ archiso ]
   pull_request:
-    branches: [ main ]
+    branches: [ archiso ]
   schedule:
     - cron: "0 8 */4 * *"  # Every 4 days
 
@@ -47,8 +47,8 @@ jobs:
 
       - name: Build Image
         run: |
-          docker build -t mikuxdev/archlinux:latest -f Dockerfile .
+          docker build -t mikuxdev/archiso:latest -f Dockerfile .
 
       - name: Push Image
         run: |
-          docker push docker.io/mikuxdev/archlinux:latest
+          docker push docker.io/mikuxdev/archiso:latest
