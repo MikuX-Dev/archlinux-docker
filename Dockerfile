@@ -45,15 +45,10 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot linux-firmware linux-firmware-whence linux-firmware-qlogic linux-firmware-qcom linux-firmware-nfp llinux-firmware-marvell \
     linux-firmware-marvell linux-firmware-liquidio linux-firmware-bnx2x net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
-    perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
-    nasm yasm yarn cargo bash ripgrep nodejs npm wget gzip curl neovim man-pages man-db vim zsh tmux ack xarchiver p7zip zip \
-    unzip gzip tar bzip3 unrar xz zstd archiso f2fs-tools automake gawk gammu gnome-keyring mtools dosfstools devtools multilib-devel npm \
-    make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed \
-    zsh zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting zsh-completions bash-completion xdg-user-dirs-gtk \
-    xdg-desktop-portal-gtk openssh gnupg arch-wiki-docs pkgfile intel-ucode ntfs-3g base smartmontools base-devel linux-lts-docs \
-    linux-hardened-docs gvfs-mtp gvfs apache udisks2 cronie irqbalance plocate arch-install-scripts bind brltty broadcom-wl \
-    clonezilla darkhttpd diffutils dmraid dnsmasq edk2-shell profile-sync-daemon pacman-contrib pkgfile hexedit exa python-virtualenv \
-    nim zig python-pipenv
+    perl automake curl sed squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
+    nasm yasm yarn bash ripgrep wget gzip curl xarchiver p7zip zip \
+    unzip gzip tar bzip3 unrar xz zstd archiso f2fs-tools automake gawk gammu gnome-keyring multilib-devel \
+    make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed 
 
 # Clean up the Pacman cache
 RUN pacman -Scc --noconfirm --quiet && \
