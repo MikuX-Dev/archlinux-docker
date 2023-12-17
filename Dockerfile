@@ -50,11 +50,12 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
     make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed
 
 # firmware
-RUN git clone https://aur.archlinux.org/pikaur.git && \
-   cd pikaur && \
-   makepkg -si --noconfirm --needed && \
-   cd .. && rm -rf pikaur && \
-   pikaur -S --needed --noconfirm mkinitcpio-firmware
+# RUN git clone https://aur.archlinux.org/pikaur.git && \
+#    cd pikaur && \
+#    makepkg -si --noconfirm --needed && \
+#    cd - && \
+#    rm -rf pikaur && \
+#    pikaur -S --needed --noconfirm mkinitcpio-firmware
 
 # Clean up the Pacman cache
 RUN pacman -Scc --noconfirm --quiet && \
