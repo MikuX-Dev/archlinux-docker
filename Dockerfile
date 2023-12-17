@@ -63,13 +63,10 @@ RUN pacman -Scc --noconfirm --quiet && \
 
 # Create builder user
 RUN useradd -m builder && \
-    echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+    sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
 
 # Change to user builder
 USER builder
 
 # Change working directory
 WORKDIR /src
-
-# Command to run build
-ENTRYPOINT ["bash"]
