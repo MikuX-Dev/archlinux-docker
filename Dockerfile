@@ -50,19 +50,19 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
     make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed
 
 # firmware
-# RUN git clone https://aur.archlinux.org/mkinitcpio-firmware.git && \
-   # cd mkinitcpio-firmware && \
-   # makepkg -si --noconfirm && \
-   # cd .. && rm -rf mkinitcpio-firmware
+RUN git clone https://aur.archlinux.org/pikaur.git && \
+   cd pikaur && \
+   makepkg -si --noconfirm --needed && \
+   cd .. && rm -rf pikaur && \
+   pikaur -S --needed --noconfirm mkinitcpio-firmware
 
 # Clean up the Pacman cache
 RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/*
 
-# Add builder User
-RUN useradd -m -d /src -G wheel -g users builder -s /bin/bash && \
-    echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# Create builder user
+RUN useradd -m builder && \
+    echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 # Change to user builder
 USER builder
@@ -70,9 +70,5 @@ USER builder
 # Change working directory
 WORKDIR /src
 
-COPY --chown=builder:users . .
-
-# Run entrypoint
-#ENTRYPOINT ["mkarchiso"]
-
-CMD ["sudo", "mkarchiso", "-v", "-w", "work/", "-o", "out/", "profile/"]
+# Command to run build
+ENTRYPOINT ["bash"]
