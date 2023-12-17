@@ -62,7 +62,7 @@ RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/*
 
 # Create builder user
-RUN useradd -m builder && \
+RUN useradd -m -s /bin/bash -G wheel builder && \
     sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
 
 # Change to user builder
