@@ -61,12 +61,10 @@ RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio
 RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/*
 
-# Create builder user
-RUN useradd -m -s /bin/bash -G wheel builder && \
-    sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
+# Add builder User
+RUN useradd -m -d /src -G wheel -g users builder -s /bin/bash && \
+    echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Change to user builder
 USER builder
-
-# Change working directory
-WORKDIR /src
