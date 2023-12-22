@@ -65,5 +65,8 @@ RUN pacman -Scc --noconfirm --quiet && \
 RUN useradd -r -m -s /bin/bash -G wheel builder && \
     sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
 
+#
+RUN chown -R builder:builder /home/builder/
+
 # Change to user builder
 # USER builder
