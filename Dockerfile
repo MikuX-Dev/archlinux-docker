@@ -36,7 +36,7 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
     pacman -Syy
 
 # Install BlackArch keyring and configure pacman
-# RUN curl -O https://blackarch.org/strap.sh && \
+# sRUN curl -O https://blackarch.org/strap.sh && \
     # bash strap.sh --noconfirm --quiet && \
     # rm -rf strap.sh && \
     # pacman -Syyu --noconfirm --quiet --needed
@@ -62,7 +62,7 @@ RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/*
 
 # Add builder User
-RUN useradd -D -rm -s /bin/bash -G wheel -g users builder && \
+RUN useradd -r -m -s /bin/bash -G wheel -g users builder && \
     echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
