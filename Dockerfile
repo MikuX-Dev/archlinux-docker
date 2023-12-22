@@ -67,4 +67,4 @@ RUN useradd -r -m -s /bin/bash -G wheel -g users builder && \
     echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Change to user builder
-USER builder
+# USER builder
