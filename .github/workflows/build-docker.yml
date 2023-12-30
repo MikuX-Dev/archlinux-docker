@@ -2,9 +2,9 @@ name: Build and Push Archlinux Docker Image
 
 on:
   push:
-    branches: [ pkgbuild ]
+    branches: [ archiso ]
   pull_request:
-    branches: [ pkgbuild ]
+    branches: [ archiso ]
   schedule:
     - cron: "0 8 */4 * *"  # Every 4 days
 
