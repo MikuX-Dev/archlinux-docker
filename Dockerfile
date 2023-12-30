@@ -50,7 +50,7 @@ RUN pacman -Scc --noconfirm --quiet && \
 
 # Add builder User
 RUN useradd -r -m -s /bin/bash -G wheel builder && \
-    sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
+    sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers
 
 # chown user
 RUN chown -R builder:builder /home/builder/
