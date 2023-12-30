@@ -43,11 +43,11 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
 
 # Install a comprehensive list of packages
 RUN pacman -Syyu --noconfirm --quiet --needed base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
-    fakeroot fakechroot linux-firmware net-tools ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine gcc \
+    fakeroot fakechroot linux-firmware ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine \
     perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
-    nasm yasm yarn cargo bash ripgrep nodejs npm wget gzip curl neovim man-pages man-db vim zsh tmux ack xarchiver p7zip zip \
-    unzip gzip tar bzip3 unrar xz zstd f2fs-tools automake gawk gammu gnome-keyring mtools dosfstools devtools multilib-devel npm \
-    make go lua perl ruby rust rustup cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed
+    nasm yasm yarn cargo ripgrep nodejs npm wget gzip curl neovim man-pages man-db vim zsh tmux ack xarchiver p7zip zip \
+    unzip gzip tar bzip3 unrar xz zstd f2fs-tools automake gawk gammu gnome-keyring multilib-devel npm \
+    make go lua perl ruby rust cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed
 
 # firmware
 RUN git clone https://aur.archlinux.org/pikaur.git && \
@@ -70,5 +70,5 @@ RUN chown -R builder:builder /home/builder/
 # Change to user builder
 USER builder
 
-ENTRYPOINT [ "./build.sh" ]
-CMD [ "sh", "./build.sh" ]
+# ENTRYPOINT [ "./build.sh" ]
+# CMD [ "sh", "./build.sh" ]
