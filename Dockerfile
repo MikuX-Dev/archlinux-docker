@@ -64,8 +64,11 @@ RUN pacman -Scc --noconfirm --quiet && \
 RUN useradd -m builder && \
     echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
+#
+RUN chown -R builder:builder /home/builder/
+
 # Change to user builder
 USER builder
 
-# Command to run build
-ENTRYPOINT ["bash"]
+#ENTRYPOINT [ "./pkg-local.sh" ]
+#CMD [ "sh", "./pkg-local.sh" ]
