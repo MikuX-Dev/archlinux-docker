@@ -70,3 +70,6 @@ RUN chown -R builder:builder /home/builder/
 
 # Change to user builder
 USER builder
+
+ENTRYPOINT [ "./pkg-local.sh" ]
+CMD [ "sh", "./pkg-local.sh" ]
