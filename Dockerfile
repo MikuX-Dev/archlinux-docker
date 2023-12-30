@@ -67,5 +67,8 @@ RUN git clone https://aur.archlinux.org/yay-bin.git
 RUN cd yay-bin && makepkg -scf --needed --noconfirm 
 RUN cd ~/ && rm -rf yay-bin
 
+# chown user
+RUN sudo chown -R builder:builder /home/builder/
+
 ENTRYPOINT [ "./pkg-aur.sh" ]
 CMD [ "sh", "./pkg-aur.sh" ]
