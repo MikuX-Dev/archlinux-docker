@@ -48,18 +48,24 @@ RUN pacman -Syyu --noconfirm --quiet --needed base-devel archiso mkinitcpio-arch
 RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/*
 
-# Create builder user
-RUN useradd -m builder && \
-    sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers
+# Add builder User
+RUN useradd -r -m -s /bin/bash -G wheel builder && \
+    sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
+    echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # chown user
 RUN chown -R builder:builder /home/builder/
 
+# Change to user builder
+USER builder
+
 # Set the working directory
 WORKDIR /home/builder
 
-# Change to user builder
-USER builder
+# install yay which can be used to install AUR dependencies
+RUN git clone https://aur.archlinux.org/yay-bin.git
+RUN cd yay-bin && makepkg -scf --needed --noconfirm 
+RUN cd ~/ && rm -rf yay-bin
 
 ENTRYPOINT [ "./build.sh" ]
 CMD [ "sh", "./build.sh" ]
