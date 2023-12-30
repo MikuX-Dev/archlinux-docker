@@ -69,4 +69,4 @@ RUN useradd -r -m -s /bin/bash -G wheel builder && \
 RUN chown -R builder:builder /home/builder/
 
 # Change to user builder
-# USER builder
+USER builder
