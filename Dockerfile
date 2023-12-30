@@ -67,8 +67,5 @@ RUN useradd -m builder && \
 # Change to user builder
 USER builder
 
-# Change working directory
-WORKDIR /src
-
 # Command to run build
 ENTRYPOINT ["bash"]
