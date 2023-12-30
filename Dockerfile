@@ -52,8 +52,11 @@ RUN pacman -Scc --noconfirm --quiet && \
 RUN useradd -r -m -s /bin/bash -G wheel builder && \
     sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /etc/sudoers
 
-#
+# chown user
 RUN chown -R builder:builder /home/builder/
+
+# Set the working directory
+WORKDIR /home/builder
 
 # Change to user builder
 USER builder
