@@ -57,8 +57,11 @@ RUN pacman -Scc --noconfirm --quiet && \
 RUN useradd -m builder && \
     echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
-#
+# chown user
 RUN chown -R builder:builder /home/builder/
+
+# Set the working directory
+WORKDIR /home/builder
 
 # Change to user builder
 USER builder
