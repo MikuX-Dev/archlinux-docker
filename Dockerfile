@@ -29,7 +29,7 @@ RUN useradd -r -m -s /bin/bash -G wheel builder && \
 
 # chown user
 RUN chown -R builder:builder /home/builder/
-RUN chown -R builder:builder /github/home
+# RUN chown -R builder:builder /github/home
 
 WORKDIR /home/builder
 
