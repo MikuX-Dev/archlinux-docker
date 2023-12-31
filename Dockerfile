@@ -23,7 +23,8 @@ RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-dev
     pacman -Syy
 
 # Add builder User
-RUN useradd -r -m -s /bin/bash -G wheel builder && \
+RUN groupadd --gid 2000 builder && \
+    useradd -r -m -s /bin/bash --uid 2000 --gid 2000 -G wheel builder && \
     sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -33,16 +34,23 @@ RUN chown -R builder:builder /home/builder/
 USER builder
 WORKDIR /home/builder
 
-# chown user
-RUN sudo chown -R builder:builder /home/builder/
-
-# install yay which can be used to install AUR dependencies
-RUN git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -scf --needed --noconfirm && cd ~/ && rm -rf yay-bin
-
-RUN yay -Scc --noconfirm
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/core_perl
 
 # chown user
 RUN sudo chown -R builder:builder /home/builder/
+
+# install yay
+RUN \
+    cd /home/builder && \
+    curl -O -s https://aur.archlinux.org/cgit/aur.git/snapshot/yay-bin.tar.gz && \
+    tar xf yay-bin.tar.gz && \
+    cd yay-bin && makepkg -is --skippgpcheck --noconfirm && cd .. && \
+    rm -rf yay-bin && rm yay-bin.tar.gz
+
+# chown user
+RUN sudo chown -R builder:builder /home/builder/
+
+RUN pacman -Scc --noconfirm
 
 # RUN su -m builder -c "./pkg-aur.sh"
 ENTRYPOINT [ "./pkg-aur.sh" ]
