@@ -3,12 +3,13 @@ FROM archlinux:base-devel
 
 RUN pacman-key --init 
 
-RUN if grep -E '^\[multilib\]|^\[community\]' /etc/pacman.conf; then \
-        sed -i '/^\[community\]/,/^\[/ s/^#//' /etc/pacman.conf \
-        sed -i '/^\[multilib\]/,/^\[/ s/^#//' /etc/pacman.conf \
-    else \
-        echo -e "\n[community]\nInclude = /etc/pacman.d/mirrorlist\n\n[multilib]\nInclude = /etc/pacman.d/mirrorlist" >>/etc/pacman.conf \
-    fi
+RUN \
+if grep -E '^\[multilib\]|^\[community\]' /etc/pacman.conf; then \
+  sed -i '/^\[community\]/,/^\[/ s/^#//' /etc/pacman.conf \
+  sed -i '/^\[multilib\]/,/^\[/ s/^#//' /etc/pacman.conf \
+else \
+  echo -e "\n[community]\nInclude = /etc/pacman.d/mirrorlist\n\n[multilib]\nInclude = /etc/pacman.d/mirrorlist" >>/etc/pacman.conf \
+fi
 
 RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
     locale-gen && \
