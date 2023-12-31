@@ -50,5 +50,3 @@ RUN \
 RUN sudo chown -R builder:builder /home/builder/
 
 RUN sudo pacman -Scc --noconfirm
-
-USER root
