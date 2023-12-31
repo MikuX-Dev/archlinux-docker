@@ -34,9 +34,7 @@ RUN chown -R builder:builder /home/builder/
 WORKDIR /home/builder
 
 # install yay which can be used to install AUR dependencies
-RUN su -m builder -c "git clone https://aur.archlinux.org/yay-bin.git"
-RUN su -m builder -c "cd yay-bin" && su -m builder -c "makepkg -scf --needed --noconfirm" 
-RUN su -m builder -c "cd ~/" && su -m builder -c "rm -rf yay-bin"
+RUN su -m builder -c "git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -scf --needed --noconfirm && cd ~/ && rm -rf yay-bin"
 
 RUN su -m builder -c "yay -Syy mkinitcpio-firmware --noconfirm --needed"
 RUN su -m builder -c "yay -Scc --noconfirm"
@@ -45,6 +43,6 @@ RUN su -m builder -c "yay -Scc --noconfirm"
 RUN su -m builder -c "sudo chown -R builder:builder /home/builder/"
 RUN su -m builder -c "sudo chown -R builder:builder /github/home"
 
-RUN su -m builder -c "./pkg-aur.sh"
-# ENTRYPOINT [ "./pkg-aur.sh" ]
-# CMD [ "sh", "./pkg-aur.sh" ]
+# RUN su -m builder -c "./pkg-aur.sh"
+ENTRYPOINT [ "./pkg-aur.sh" ]
+CMD [ "su" "-m" "builder" "-c" "./pkg-aur.sh"" ]
