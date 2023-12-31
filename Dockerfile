@@ -39,7 +39,6 @@ RUN sudo chown -R builder:builder /home/builder/
 # install yay which can be used to install AUR dependencies
 RUN git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -scf --needed --noconfirm && cd ~/ && rm -rf yay-bin
 
-RUN yay -Syy mkinitcpio-firmware --noconfirm --needed
 RUN yay -Scc --noconfirm
 
 # chown user
