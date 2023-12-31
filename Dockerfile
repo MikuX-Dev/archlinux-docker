@@ -29,7 +29,6 @@ RUN useradd -r -m -s /bin/bash -G wheel builder && \
 
 # chown user
 RUN chown -R builder:builder /home/builder/
-RUN chown -R builder:builder /github/home
 
 USER builder
 WORKDIR /home/builder
