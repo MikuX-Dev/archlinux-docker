@@ -1,65 +1,42 @@
 # Use the Arch Linux base image with development tools
 FROM archlinux:base-devel
 
-RUN pacman-key --init && \
-    pacman-key --populate
+RUN pacman-key --init 
 
-RUN \
-if grep -q "\[multilib\]" /etc/pacman.conf; then \
-  sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
-else \
-  echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
-fi
-
-RUN \
-if grep -q "\[community\]" /etc/pacman.conf; then \
-  sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf; \
-else \
-  echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf; \
-fi
+RUN if grep -E '^\[multilib\]|^\[community\]' /etc/pacman.conf; then && \
+        sed -i '/^\[community\]/,/^\[/ s/^#//' /etc/pacman.conf && \
+        sed -i '/^\[multilib\]/,/^\[/ s/^#//' /etc/pacman.conf && \
+    else && \
+        echo -e "\n[community]\nInclude = /etc/pacman.d/mirrorlist\n\n[multilib]\nInclude = /etc/pacman.d/mirrorlist" >>/etc/pacman.conf && \
+    fi
 
 RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
     locale-gen && \
-    echo "LANG=en_US.UTF-8" > /etc/locale.conf
-
-RUN echo 'KEYMAP=us' > /etc/vconsole.conf
+    echo "LANG=en_US.UTF-8" > /etc/locale.conf && \
+    echo 'KEYMAP=us' > /etc/vconsole.conf
 
 # Update the system and install essential packages
 RUN pacman -Syy --noconfirm --quiet --needed archlinux-keyring
 
-# Initialize and populate Pacman keyring
-RUN pacman-key --init && \
-    pacman-key --populate
-
-RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
+RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-devel devtools sudo namcap fakeroot audit grep diffutils && \
     reflector --latest 10 -f 10 -n 10 --age 10 --protocol https --download-timeout 25 --sort rate --save /etc/pacman.d/mirrorlist && \
     pacman -Syy
-
-# Install BlackArch keyring and configure pacman
-# sRUN curl -O https://blackarch.org/strap.sh && \
-    # bash strap.sh --noconfirm --quiet && \
-    # rm -rf strap.sh && \
-    # pacman -Syyu --noconfirm --quiet --needed
-
-# Install a comprehensive list of packages
-RUN pacman -Syyu --noconfirm --quiet --needed base-devel devtools sudo namcap fakeroot audit grep diffutils
 
 # Clean up the Pacman cache
 RUN pacman -Scc --noconfirm --quiet && \
     rm -rf /var/cache/pacman/pkg/*
 
 # Add builder User
-RUN useradd -r -m -s /bin/bash -G wheel builder && \
+RUN groupadd builder && \
+    useradd -r -m -s /bin/bash -G wheel builder && \
     sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # chown user
 RUN chown -R builder:builder /home/builder/
+RUN chown -R builder:builder /github/home
 
-# Change to user builder
 USER builder
-
-# Set the working directory
 WORKDIR /home/builder
 
 # install yay which can be used to install AUR dependencies
@@ -69,6 +46,7 @@ RUN cd ~/ && rm -rf yay-bin
 
 # chown user
 RUN sudo chown -R builder:builder /home/builder/
+RUN sudo chown -R builder:builder /github/home
 
 ENTRYPOINT [ "./pkg-aur.sh" ]
 CMD [ "sh", "./pkg-aur.sh" ]
