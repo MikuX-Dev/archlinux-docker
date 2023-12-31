@@ -1,7 +1,7 @@
 # Use the Arch Linux base image with development tools
 FROM archlinux:base-devel
 
-RUN pacman-key --init 
+RUN pacman-key --init
 
 RUN \
 if grep -q "\[multilib\]" /etc/pacman.conf; then \
@@ -29,20 +29,22 @@ RUN useradd -r -m -s /bin/bash -G wheel builder && \
 
 # chown user
 RUN chown -R builder:builder /home/builder/
-# RUN chown -R builder:builder /github/home
+RUN chown -R builder:builder /github/home
 
+USER builder
 WORKDIR /home/builder
 
-# install yay which can be used to install AUR dependencies
-RUN su -m builder -c "git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -scf --needed --noconfirm && cd ~/ && rm -rf yay-bin"
+# chown user
+RUN sudo chown -R builder:builder /home/builder/
 
-RUN su -m builder -c "yay -Syy mkinitcpio-firmware --noconfirm --needed"
-RUN su -m builder -c "yay -Scc --noconfirm"
+# install yay which can be used to install AUR dependencies
+RUN git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -scf --needed --noconfirm && cd ~/ && rm -rf yay-bin
+
+RUN yay -Syy mkinitcpio-firmware --noconfirm --needed
+RUN yay -Scc --noconfirm
 
 # chown user
-RUN su -m builder -c "sudo chown -R builder:builder /home/builder/"
-RUN su -m builder -c "sudo chown -R builder:builder /github/home"
+RUN sudo chown -R builder:builder /home/builder/
 
 # RUN su -m builder -c "./pkg-aur.sh"
 ENTRYPOINT [ "./pkg-aur.sh" ]
-CMD [ "su" "-m" "builder" "-c" "./pkg-aur.sh"" ]
