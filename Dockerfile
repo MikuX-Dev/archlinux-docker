@@ -23,8 +23,7 @@ RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-dev
     pacman -Syy
 
 # Add builder User
-RUN groupadd --gid 2000 builder && \
-    useradd -m -s /bin/bash --uid 2000 --gid 2000 -G wheel builder && \
+RUN useradd -m -s /bin/bash -G wheel builder && \
     sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
     echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -52,5 +51,4 @@ RUN sudo chown -R builder:builder /home/builder/
 
 RUN sudo pacman -Scc --noconfirm
 
-# RUN su -m builder -c "./pkg-aur.sh"
-ENTRYPOINT [ "./pkg-aur.sh" ]
+USER root
