@@ -3,11 +3,11 @@ FROM archlinux:base-devel
 
 RUN pacman-key --init 
 
-RUN if grep -E '^\[multilib\]|^\[community\]' /etc/pacman.conf; then && \
-        sed -i '/^\[community\]/,/^\[/ s/^#//' /etc/pacman.conf && \
-        sed -i '/^\[multilib\]/,/^\[/ s/^#//' /etc/pacman.conf && \
-    else && \
-        echo -e "\n[community]\nInclude = /etc/pacman.d/mirrorlist\n\n[multilib]\nInclude = /etc/pacman.d/mirrorlist" >>/etc/pacman.conf && \
+RUN if grep -E '^\[multilib\]|^\[community\]' /etc/pacman.conf; then \
+        sed -i '/^\[community\]/,/^\[/ s/^#//' /etc/pacman.conf \
+        sed -i '/^\[multilib\]/,/^\[/ s/^#//' /etc/pacman.conf \
+    else \
+        echo -e "\n[community]\nInclude = /etc/pacman.d/mirrorlist\n\n[multilib]\nInclude = /etc/pacman.d/mirrorlist" >>/etc/pacman.conf \
     fi
 
 RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
@@ -18,13 +18,9 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
 # Update the system and install essential packages
 RUN pacman -Syy --noconfirm --quiet --needed archlinux-keyring
 
-RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-devel devtools sudo namcap fakeroot audit grep diffutils && \
-    reflector --latest 10 -f 10 -n 10 --age 10 --protocol https --download-timeout 25 --sort rate --save /etc/pacman.d/mirrorlist && \
+RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-devel devtools sudo git namcap fakeroot audit grep diffutils && \
+    reflector --latest 21 -f 21 -n 21 --age 21 --protocol https --download-timeout 55 --sort rate --save /etc/pacman.d/mirrorlist && \
     pacman -Syy
-
-# Clean up the Pacman cache
-RUN pacman -Scc --noconfirm --quiet && \
-    rm -rf /var/cache/pacman/pkg/*
 
 # Add builder User
 RUN groupadd builder && \
@@ -43,6 +39,9 @@ WORKDIR /home/builder
 RUN git clone https://aur.archlinux.org/yay-bin.git
 RUN cd yay-bin && makepkg -scf --needed --noconfirm 
 RUN cd ~/ && rm -rf yay-bin
+
+RUN yay -Syy mkinitcpio-firmware --noconfirm --needed
+RUN yay -Scc --noconfirm
 
 # chown user
 RUN sudo chown -R builder:builder /home/builder/
