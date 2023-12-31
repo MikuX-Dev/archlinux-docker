@@ -50,7 +50,7 @@ RUN \
 # chown user
 RUN sudo chown -R builder:builder /home/builder/
 
-RUN pacman -Scc --noconfirm
+RUN sudo pacman -Scc --noconfirm
 
 # RUN su -m builder -c "./pkg-aur.sh"
 ENTRYPOINT [ "./pkg-aur.sh" ]
