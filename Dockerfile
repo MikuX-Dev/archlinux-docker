@@ -17,9 +17,7 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
 
 # Update the system and install essential packages
 # Install BlackArch keyring and configure pacman
-RUN curl -O https://blackarch.org/strap.sh && \
-    bash strap.sh --noconfirm --quiet && \
-    rm -rf strap.sh && \
+RUN curl -O https://blackarch.org/strap.sh; chmod +x strap.sh; ./strap.sh; rm -rf strap.sh && \
     pacman -Syyu --noconfirm --quiet --needed archlinux-keyring
 
 RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-devel archiso devtools && \
