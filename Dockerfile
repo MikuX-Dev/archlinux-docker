@@ -28,7 +28,7 @@ RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
     reflector --latest 21 -f 21 --protocol https --download-timeout 55 --sort rate --save /etc/pacman.d/mirrorlist && \
     pacman -Syy 
 
-RUN pacman -Syy base base-devel archiso devtools dosfstools mtools fakeroot fakechroot linux-firmware ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc nasm yasm yarn cargo ripgrep nodejs npm wget gzip curl neovim man-pages man-db vim zsh tmux ack xarchiver p7zip zip unzip gzip tar bzip3 unrar xz zstd f2fs-tools automake gawk gammu gnome-keyring multilib-devel npm make go lua perl ruby rust cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed
+RUN pacman -Syy --noconfirm --quiet --needed base base-devel archiso devtools dosfstools mtools fakeroot fakechroot linux-firmware ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc nasm yasm yarn cargo ripgrep nodejs npm wget gzip curl neovim man-pages man-db vim zsh tmux ack xarchiver p7zip zip unzip gzip tar bzip3 unrar xz zstd f2fs-tools automake gawk gammu gnome-keyring multilib-devel npm make go lua perl ruby rust cmake gcc gcc-libs gdb ppp rp-pppoe pptpclient reiserfsprogs clang llvm ccache curl wget sed
 
 # Add builder User
 RUN useradd -m -d /home/user -s /bin/bash -G wheel user && \
