@@ -56,7 +56,3 @@ RUN chown -R builder:builder /home/builder/
 RUN pacman -Scc --noconfirm
 
 RUN pacman -Syy
-
-RUN chown -R builder:builder /home/builder/
-
-RUN pacman -Scc --noconfirm
