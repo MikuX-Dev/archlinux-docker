@@ -1,4 +1,4 @@
-name: Build and Push Archlinux Docker Image
+name: dev env personal docker
 
 on:
   push:
@@ -11,44 +11,23 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    container:
-      image: archlinux:base-devel
 
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
-
-      - name: setup
-        run: |
-          sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen
-          locale-gen
-          echo "LANG=en_US.UTF-8" > /etc/locale.conf
-          echo 'KEYMAP=us' > /etc/vconsole.conf
-          if grep -q "\[multilib\]" /etc/pacman.conf; then
-            sed -i '/^\[multilib\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf;
-          else
-            echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf;
-          fi
-          if grep -q "\[community\]" /etc/pacman.conf; then
-            sed -i '/^\[community\]/,/Include = \/etc\/pacman.d\/mirrorlist/ s/^#//' /etc/pacman.conf;
-          else
-            echo -e "[community]\nInclude = /etc/pacman.d/mirrorlist" | tee -a /etc/pacman.conf;
-          fi
-          pacman -Syy --noconfirm --quiet --needed reflector rsync curl archlinux-keyring
-          # curl https://raw.githubusercontent.com/MikuX-Dev/docker-archiso/main/blackarch-mirrorlist -o /etc/pacman.d/blackarch-mirrorlist
-          reflector --latest 10 -f 10 -n 10 --age 10 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
-          pacman -Syy --noconfirm --quiet --needed base-devel docker docker-buildx
+        uses: actions/checkout@v4
 
       - name: Log into registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Image
-        run: |
-          docker build -t mikuxdev/dev:latest -f Dockerfile .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Push Image
-        run: |
-          docker push docker.io/mikuxdev/dev:latest
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: mikuxdev/dev:latest
