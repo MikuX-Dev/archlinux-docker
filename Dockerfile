@@ -1,7 +1,9 @@
 # Use the Arch Linux base image with development tools
 FROM archlinux:base-devel
 
-RUN pacman-key --init
+# Install BlackArch keyring and configure pacman
+RUN curl https://raw.githubusercontent.com/Athena-OS/package-source/main/packages/aegis/strap.sh -o strap.sh; chmod +x strap.sh; ./strap.sh; rm -rf strap.sh && \
+    pacman -Syyu --noconfirm --quiet --needed
 
 RUN \
 if grep -q "\[multilib\]" /etc/pacman.conf; then \
@@ -48,6 +50,12 @@ RUN \
     rm -rf yay-bin && rm yay-bin.tar.gz
 
 USER root
+
+RUN chown -R builder:builder /home/builder/
+
+RUN pacman -Scc --noconfirm
+
+RUN pacman -Syy
 
 RUN chown -R builder:builder /home/builder/
 
