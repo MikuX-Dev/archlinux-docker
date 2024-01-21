@@ -26,7 +26,9 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
 
 RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget && \
     reflector --latest 21 -f 21 --protocol https --download-timeout 55 --sort rate --save /etc/pacman.d/mirrorlist && \
-    pacman -Syy base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
+    pacman -Syy 
+
+RUN pacman -Sy base base-devel archiso mkinitcpio-archiso devtools dosfstools mtools \
     fakeroot fakechroot linux-firmware ntp git git-lfs docker docker-compose docker-buildx docker-scan docker-machine \
     perl automake curl sed arch-install-scripts squashfs-tools libisoburn btrfs-progs lynx mkinitcpio-nfs-utils glibc \
     nasm yasm yarn cargo ripgrep nodejs npm wget gzip curl neovim man-pages man-db vim zsh tmux ack xarchiver p7zip zip \
