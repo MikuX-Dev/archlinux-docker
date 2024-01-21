@@ -19,13 +19,14 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
 RUN pacman -Syy --noconfirm --quiet --needed archlinux-keyring
 
 RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-devel devtools sudo git namcap fakeroot audit grep diffutils && \
-    reflector --latest 21 -f 21 -n 21 --age 21 --protocol https --download-timeout 55 --sort rate --save /etc/pacman.d/mirrorlist && \
+    reflector --latest 21 -f 21 --protocol https --download-timeout 55 --sort rate --save /etc/pacman.d/mirrorlist && \
     pacman -Syy
 
 # Add builder User
-RUN useradd -m -s /bin/bash -G wheel builder && \
+RUN useradd -m -d /home/builder -s /bin/bash -G wheel builder && \
     sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers && \
-    echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # chown user
 RUN chown -R builder:builder /home/builder/
@@ -33,7 +34,7 @@ RUN chown -R builder:builder /home/builder/
 USER builder
 WORKDIR /home/builder
 
-ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/core_perl
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/core_perl"
 
 # chown user
 RUN sudo chown -R builder:builder /home/builder/
@@ -43,10 +44,11 @@ RUN \
     cd /home/builder && \
     curl -O -s https://aur.archlinux.org/cgit/aur.git/snapshot/yay-bin.tar.gz && \
     tar xf yay-bin.tar.gz && \
-    cd yay-bin && makepkg -is --skippgpcheck --noconfirm && cd .. && \
+    cd yay-bin && makepkg -is --skippgpcheck --noconfirm && cd - && \
     rm -rf yay-bin && rm yay-bin.tar.gz
 
-# chown user
-RUN sudo chown -R builder:builder /home/builder/
+USER root
 
-RUN sudo pacman -Scc --noconfirm
+RUN chown -R builder:builder /home/builder/
+
+RUN pacman -Scc --noconfirm
