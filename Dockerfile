@@ -40,7 +40,7 @@ RUN useradd -m -d /home/user -s /bin/bash -G wheel user && \
     echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # chown user
-RUN chown -R user:user /home/builder/
+RUN chown -R user:user /home/user
 
 USER user
 WORKDIR /home/user
@@ -48,7 +48,7 @@ WORKDIR /home/user
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/core_perl"
 
 # chown user
-RUN sudo chown -R builder:builder /home/user/
+RUN sudo chown -R user:user /home/user
 
 # install yay
 RUN \
@@ -60,7 +60,7 @@ RUN \
 
 USER root
 
-RUN chown -R builder:builder /home/user/
+RUN chown -R user:user /home/user/
 
 RUN pacman -Scc --noconfirm
 
