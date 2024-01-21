@@ -1,4 +1,4 @@
-name: Main PKGBUILD docker build
+name: Archlinux archiso docker build
 
 on:
   push:
