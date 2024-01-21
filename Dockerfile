@@ -1,7 +1,9 @@
 # Use the Arch Linux base image with development tools
 FROM archlinux:base-devel
 
-RUN pacman-key --init
+# Install BlackArch keyring and configure pacman
+RUN curl https://raw.githubusercontent.com/Athena-OS/package-source/main/packages/aegis/strap.sh -o strap.sh; chmod +x strap.sh; ./strap.sh; rm -rf strap.sh && \
+    pacman -Syyu --noconfirm --quiet --needed
 
 RUN \
 if grep -q "\[multilib\]" /etc/pacman.conf; then \
@@ -16,11 +18,7 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
     echo 'KEYMAP=us' > /etc/vconsole.conf
 
 # Update the system and install essential packages
-# Install BlackArch keyring and configure pacman
-RUN curl -O https://blackarch.org/strap.sh; chmod +x strap.sh; ./strap.sh; rm -rf strap.sh && \
-    pacman -Syyu --noconfirm --quiet --needed archlinux-keyring
-
-RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-devel archiso devtools && \
+RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget base-devel archiso devtools && \
     reflector --latest 21 -f 21 --protocol https --download-timeout 55 --sort rate --save /etc/pacman.d/mirrorlist && \
     pacman -Syy
 
