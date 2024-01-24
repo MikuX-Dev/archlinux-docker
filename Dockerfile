@@ -46,7 +46,7 @@ RUN \
     tar xf yay-bin.tar.gz && \
     cd yay-bin && makepkg -is --skippgpcheck --noconfirm && cd - && \
     rm -rf yay-bin* && \
-    yay -S paru powerpill --noconfirm --needed
+    yay -S paru powerpill rate-mirrors --noconfirm --needed
 
 RUN rate-mirrors arch --max-delay=21600 | sudo tee /etc/pacman.d/mirrorlist && \
     rate-mirrors blackarch --max-delay=21600 | sudo tee /etc/pacman.d/mirrorlist && \
