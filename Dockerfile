@@ -48,10 +48,6 @@ RUN \
     rm -rf yay-bin* && \
     yay -S paru powerpill rate-mirrors-bin --noconfirm --needed
 
-RUN rate-mirrors arch | sudo tee /etc/pacman.d/mirrorlist && \
-    rate-mirrors blackarch | sudo tee /etc/pacman.d/mirrorlist && \
-    pacman -Syy
-
 RUN paru -Scc --noconfirm && yay -Scc --noconfirm && \
     paru -Syy
 
