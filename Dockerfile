@@ -18,9 +18,7 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
     echo 'KEYMAP=us' > /etc/vconsole.conf
 
 # Update the system and install essential packages
-RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget base-devel archiso devtools && \
-    reflector --latest 21 -f 21 --protocol https --download-timeout 55 --sort rate --save /etc/pacman.d/mirrorlist && \
-    pacman -Syy
+RUN pacman -Syy --noconfirm --quiet --needed reflector rsync curl wget base-devel archiso devtools
 
 # Add builder User
 RUN useradd -m -d /home/builder -s /bin/bash -G wheel builder && \
