@@ -20,9 +20,7 @@ RUN sed -i "s/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g" /etc/locale.gen && \
 # Update the system and install essential packages
 RUN pacman -Syy --noconfirm --quiet --needed archlinux-keyring
 
-RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-devel devtools sudo git namcap fakeroot audit grep diffutils && \
-    reflector --latest 21 -f 21 --protocol https --download-timeout 55 --sort rate --save /etc/pacman.d/mirrorlist && \
-    pacman -Syy
+RUN pacman -Syyu --noconfirm --quiet --needed reflector rsync curl wget base-devel devtools sudo git namcap fakeroot audit grep diffutils
 
 # Add builder User
 RUN useradd -m -d /home/builder -s /bin/bash -G wheel builder && \
@@ -47,12 +45,16 @@ RUN \
     curl -O -s https://aur.archlinux.org/cgit/aur.git/snapshot/yay-bin.tar.gz && \
     tar xf yay-bin.tar.gz && \
     cd yay-bin && makepkg -is --skippgpcheck --noconfirm && cd - && \
-    rm -rf yay-bin && rm yay-bin.tar.gz
+    rm -rf yay-bin* && \
+    yay -S paru powerpill --noconfirm --needed
+
+RUN rate-mirrors arch --max-delay=21600 | sudo tee /etc/pacman.d/mirrorlist && \
+    rate-mirrors blackarch --max-delay=21600 | sudo tee /etc/pacman.d/mirrorlist && \
+    pacman -Syy
+
+RUN paru -Scc --noconfirm && yay -Scc --noconfirm && \
+    paru -Syy
 
 USER root
 
 RUN chown -R builder:builder /home/builder/
-
-RUN pacman -Scc --noconfirm
-
-RUN pacman -Syy
