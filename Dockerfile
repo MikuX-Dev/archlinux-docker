@@ -47,7 +47,11 @@ RUN \
     curl -O -s https://aur.archlinux.org/cgit/aur.git/snapshot/yay-bin.tar.gz && \
     tar xf yay-bin.tar.gz && \
     cd yay-bin && makepkg -is --skippgpcheck --noconfirm && cd - && \
-    rm -rf yay-bin && rm yay-bin.tar.gz
+    rm -rf yay-bin* && \
+    yay -S paru powerpill rate-mirrors-bin --noconfirm --needed
+
+RUN paru -Scc --noconfirm && yay -Scc --noconfirm && \
+    paru -Syy
 
 USER root
 
