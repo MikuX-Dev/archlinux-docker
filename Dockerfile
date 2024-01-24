@@ -49,16 +49,16 @@ RUN sudo chown -R user:user /home/user
 
 # install yay
 RUN \
-    cd /home/user && \
+    cd /home/builder && \
     curl -O -s https://aur.archlinux.org/cgit/aur.git/snapshot/yay-bin.tar.gz && \
     tar xf yay-bin.tar.gz && \
     cd yay-bin && makepkg -is --skippgpcheck --noconfirm && cd - && \
-    rm -rf yay-bin && rm yay-bin.tar.gz
+    rm -rf yay-bin* && \
+    yay -S paru powerpill rate-mirrors-bin --noconfirm --needed
+
+RUN paru -Scc --noconfirm && yay -Scc --noconfirm && \
+    paru -Syy
 
 USER root
 
-RUN chown -R user:user /home/user/
-
-RUN pacman -Scc --noconfirm
-
-RUN pacman -Syy
+RUN chown -R builder:builder /home/builder/
