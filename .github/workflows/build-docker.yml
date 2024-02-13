@@ -1,10 +1,10 @@
-name: Main PKGBUILD docker build
+name: gitpod docker build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ gitpod ]
   pull_request:
-    branches: [ main ]
+    branches: [ gitpod ]
   schedule:
     - cron: "0 8 */4 * *"  # Every 4 days
 
@@ -30,5 +30,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: mikuxdev/archlinux-pkgbuild:latest
+          tags: mikuxdev/gitpod:latest
 
